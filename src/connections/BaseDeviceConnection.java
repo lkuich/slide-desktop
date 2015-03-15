@@ -17,7 +17,6 @@ import gui.ErrorMessage;
 import gui.Home;
 
 public abstract class BaseDeviceConnection
-    extends Master
     implements DeviceConnection
 {
     private Robot rb;
@@ -250,10 +249,10 @@ public abstract class BaseDeviceConnection
             rb.mouseMove((int) movX, (int) movY);
         }*/
 
-        if (getSettings().getPositioningMode() == PositioningMode.RELATIVE)
+        if (getSettings().positioningMode() == PositioningMode.RELATIVE)
         {
-            double movX = cursorX + m1 * getSettings().getSensitivity();
-            double movY = cursorY + m2 * getSettings().getSensitivity();
+            double movX = cursorX + m1 * getSettings().sensitivity();
+            double movY = cursorY + m2 * getSettings().sensitivity();
 
             //TODO: Find a way to prevent mouse from going out of screen bounds
             rb.mouseMove((int) movX, (int) movY);
@@ -273,9 +272,9 @@ public abstract class BaseDeviceConnection
     {
         if (isUptoDate(version))
         {
-            getSettings().setPositioningMode(PositioningMode.ABSOLUTE);
-            getSettings().setSensitivity((double) (sensitivity / 10));
-            getSettings().setScale(x, y);
+            getSettings().positioningMode_$eq(PositioningMode.ABSOLUTE);
+            getSettings().sensitivity_$eq((double) (sensitivity / 10));
+            getSettings().scale_$eq(x, y);
         }
     }
 
@@ -283,8 +282,8 @@ public abstract class BaseDeviceConnection
     {
         if (isUptoDate(version))
         {
-            getSettings().setPositioningMode(PositioningMode.RELATIVE);
-            getSettings().setSensitivity((double) (sensitivity / 10));
+            getSettings().positioningMode_$eq(PositioningMode.RELATIVE);
+            getSettings().sensitivity_$eq((double) (sensitivity / 10));
         }
     }
 
@@ -518,12 +517,12 @@ public abstract class BaseDeviceConnection
 
     protected void onScrollDown()
     {
-        rb.mouseWheel(getSettings().getScrollAxis());
+        rb.mouseWheel(getSettings().scrollAxis());
     }
 
     protected void onScrollUp()
     {
-        rb.mouseWheel(getSettings().getScrollAxis() * -1);
+        rb.mouseWheel(getSettings().scrollAxis() * -1);
     }
 
     protected void onZoomOut()
