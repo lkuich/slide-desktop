@@ -9,35 +9,26 @@ object SystemInfo {
     var systemExtension: String = ""
     var operatingSystem: OperatingSystem = OperatingSystem.UNKNOWN
 
-    private var _chmod: String = ""
+    private var chmod: String = ""
 
-    //def operatingSystem(): Unit = {
     val os: String = System.getProperty("os.name").toUpperCase
     val bit: String = System.getProperty("sun.arch.data.model")
 
     if (os.toUpperCase.contains("WIN")) {
-        _chmod = ""
+        chmod = ""
         systemExtension = ".exe"
         operatingSystem = OperatingSystem.WINDOWS
         "win" + "_" + bit
     }
     else if (os.toUpperCase.contains("MAC")) {
-        _chmod = "+x"
-        systemExtension = ""
+        chmod = "+x"
         operatingSystem = OperatingSystem.OSX
         "osx" + "_" + bit
     }
     else {
-        _chmod = "+x"
-        systemExtension = ""
+        chmod = "+x"
         operatingSystem = OperatingSystem.NIX
         "nix" + "_" + bit
-    }
-    //}
-
-    def chmod: String = {
-        // this.operatingSystem()
-        this._chmod
     }
 
     def downloadFile(url: URL, path: File): Unit = {

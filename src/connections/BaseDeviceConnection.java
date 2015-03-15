@@ -9,6 +9,7 @@ import java.awt.event.KeyEvent;
 import java.io.EOFException;
 import java.io.IOException;
 import davinci.Const;
+import davinci.Settings;
 import davinci.UnknownCommandException;
 import enums.DeviceMessageType;
 import enums.PositioningMode;
@@ -53,25 +54,11 @@ public abstract class BaseDeviceConnection
 
             try
             {
-                this.handleMessage(this.getNextMessage());
-            } catch (EOFException e)
+                this.handleMessage(this.nextMessage());
+            } catch (final Exception e)
             {
-                e.printStackTrace();
                 this.close();
                 return false;
-            } catch (ClassNotFoundException e)
-            {
-                e.printStackTrace();
-                this.close();
-                return false;
-            } catch (IOException e)
-            {
-                e.printStackTrace();
-                this.close();
-                return false;
-            } catch (UnknownCommandException e)
-            {
-                e.printStackTrace();
             }
             firstRun = false;
         }
@@ -249,10 +236,10 @@ public abstract class BaseDeviceConnection
             rb.mouseMove((int) movX, (int) movY);
         }*/
 
-        if (getSettings().positioningMode() == PositioningMode.RELATIVE)
+        if (Settings.positioningMode() == PositioningMode.RELATIVE)
         {
-            double movX = cursorX + m1 * getSettings().sensitivity();
-            double movY = cursorY + m2 * getSettings().sensitivity();
+            double movX = cursorX + m1 * Settings.sensitivity();
+            double movY = cursorY + m2 * Settings.sensitivity();
 
             //TODO: Find a way to prevent mouse from going out of screen bounds
             rb.mouseMove((int) movX, (int) movY);
@@ -272,9 +259,9 @@ public abstract class BaseDeviceConnection
     {
         if (isUptoDate(version))
         {
-            getSettings().positioningMode_$eq(PositioningMode.ABSOLUTE);
-            getSettings().sensitivity_$eq((double) (sensitivity / 10));
-            getSettings().scale_$eq(x, y);
+            Settings.positioningMode_$eq(PositioningMode.ABSOLUTE);
+            Settings.sensitivity_$eq((double) (sensitivity / 10));
+            Settings.scale_$eq(x, y);
         }
     }
 
@@ -282,8 +269,8 @@ public abstract class BaseDeviceConnection
     {
         if (isUptoDate(version))
         {
-            getSettings().positioningMode_$eq(PositioningMode.RELATIVE);
-            getSettings().sensitivity_$eq((double) (sensitivity / 10));
+            Settings.positioningMode_$eq(PositioningMode.RELATIVE);
+            Settings.sensitivity_$eq((double) (sensitivity / 10));
         }
     }
 
@@ -517,12 +504,12 @@ public abstract class BaseDeviceConnection
 
     protected void onScrollDown()
     {
-        rb.mouseWheel(getSettings().scrollAxis());
+        rb.mouseWheel(Settings.scrollAxis());
     }
 
     protected void onScrollUp()
     {
-        rb.mouseWheel(getSettings().scrollAxis() * -1);
+        rb.mouseWheel(Settings.scrollAxis() * -1);
     }
 
     protected void onZoomOut()
