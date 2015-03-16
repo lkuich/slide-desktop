@@ -45,9 +45,7 @@ abstract class BaseDeviceConnection extends DeviceConnection {
         while (running) {
             try {
                 this.handleMessage(this.nextMessage())
-                return true
-            }
-            catch {
+            } catch {
                 case e: Exception =>
                     this.close()
                     return false

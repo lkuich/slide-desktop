@@ -1,16 +1,17 @@
 package gui
 
 import java.awt.BorderLayout
-import java.awt.event.{ActionEvent, ActionListener}
+import java.awt.event.{WindowEvent, ActionEvent, ActionListener, WindowListener}
 import java.io.IOException
-import javax.swing.{JOptionPane, WindowConstants, JFrame}
-
+import javax.swing._
 import connections.network.NetworkDeviceManager
 import connections.usb.UsbDeviceManager
 import davinci.Master
 import enums.ConnectionMode
 
-object Frame extends JFrame {
+object Frame extends JFrame with WindowListener {
+
+    this.setLookAndFeel()
 
     private val middle_x: Int = 250
     private val middle_y: Int = 100
@@ -41,6 +42,8 @@ object Frame extends JFrame {
         }
     })
 
+    deviceField.onControlsVisible()
+
     private val usbMan: UsbDeviceManager = new UsbDeviceManager
     private val networkMan: NetworkDeviceManager = new NetworkDeviceManager
 
@@ -49,7 +52,8 @@ object Frame extends JFrame {
     // Initialize interface components
     this.setTitle("Slide")
     this.setResizable(false)
-    this.setBounds(100, 100, 250, 210)
+    this.addWindowListener(this)
+    this.setBounds(100, 100, 0, 0)
     this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE)
 
     this.getContentPane.add(deviceField, BorderLayout.CENTER)
@@ -68,4 +72,21 @@ object Frame extends JFrame {
 
     def showPrompt(message: String): Unit =
         JOptionPane.showMessageDialog(this, message)
+
+    def setLookAndFeel(): Unit = UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName)
+
+    override def windowOpened(e: WindowEvent): Unit =
+        this.setSize(deviceField.maxWidth() + getInsets.left, deviceField.maxHeight() + getInsets.top)
+
+    override def windowDeiconified(e: WindowEvent): Unit = {}
+
+    override def windowClosing(e: WindowEvent): Unit = {}
+
+    override def windowClosed(e: WindowEvent): Unit = {}
+
+    override def windowActivated(e: WindowEvent): Unit = {}
+
+    override def windowDeactivated(e: WindowEvent): Unit = {}
+
+    override def windowIconified(e: WindowEvent): Unit = {}
 }

@@ -9,6 +9,7 @@
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="ddmlib" level="project" />
     <orderEntry type="library" name="guava-15.0" level="project" />
-    <orderEntry type="library" name="scala-sdk-2.11.6" level="application" />
+    <orderEntry type="library" name="miglayout-4.0" level="project" />
+    <orderEntry type="library" name="scala-sdk-2.11.6" level="project" />
   </component>
 </module>
