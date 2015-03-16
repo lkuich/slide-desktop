@@ -6,7 +6,7 @@ import java.net.Socket
 
 import davinci.{Const, Settings, UnknownCommandException}
 import enums.{DeviceMessageType, PositioningMode}
-import gui.{ErrorMessage, Home}
+import gui.{ErrorMessage, Frame}
 
 abstract class BaseDeviceConnection extends DeviceConnection {
 
@@ -39,12 +39,13 @@ abstract class BaseDeviceConnection extends DeviceConnection {
         index
     }
 
-    def start(): Boolean = {
+    override def start(): Boolean = {
         rb = new Robot
         var firstRun: Boolean = true
         while (running) {
             try {
                 this.handleMessage(this.nextMessage())
+                return true
             }
             catch {
                 case e: Exception =>
@@ -53,7 +54,6 @@ abstract class BaseDeviceConnection extends DeviceConnection {
             }
             firstRun = false
         }
-
         false
     }
 
@@ -103,34 +103,32 @@ abstract class BaseDeviceConnection extends DeviceConnection {
             case DeviceMessageType.MOVE_CURSOR =>
                 this.onMoveCursor(m1, m2)
             case DeviceMessageType.CLOSE =>
-                this.onClose()
+                this.stopRunning()
         }
     }
 
+    protected def stopRunning(): Unit = running = false
+
     protected def onMoveCursor(m1: Short, m2: Short) {
-        if (Settings.positioningMode eq PositioningMode.RELATIVE) {
+        if (Settings.positioningMode == PositioningMode.RELATIVE) {
             val movX: Double = cursorX + m1 * Settings.sensitivity
             val movY: Double = cursorY + m2 * Settings.sensitivity
             rb.mouseMove(movX.toInt, movY.toInt)
         }
     }
 
-    protected def onClose() {
-        running = false
-    }
-
     protected def onAbsolute(x: Short, y: Short, sensitivity: Short, version: Short) {
         if (isUptoDate(version)) {
-            Settings.positioningMode_$eq(PositioningMode.ABSOLUTE)
-            Settings.sensitivity_$eq((sensitivity / 10).toDouble)
-            Settings.scale_$eq(x, y)
+            Settings.positioningMode = PositioningMode.ABSOLUTE
+            Settings.sensitivity = (sensitivity / 10).toDouble
+            Settings.scale_=(x, y)
         }
     }
 
     protected def onRelative(sensitivity: Short, version: Short) {
         if (isUptoDate(version)) {
-            Settings.positioningMode_$eq(PositioningMode.RELATIVE)
-            Settings.sensitivity_$eq((sensitivity / 10).toDouble)
+            Settings.positioningMode = PositioningMode.RELATIVE
+            Settings.sensitivity = (sensitivity / 10).toDouble
         }
     }
 
@@ -138,7 +136,7 @@ abstract class BaseDeviceConnection extends DeviceConnection {
         if (Const.MIN_VERSION > version) {
             this.close()
 
-            val err: ErrorMessage = new ErrorMessage(Home, "Error", "The client is out of date. Please upgrade it.")
+            val err: ErrorMessage = new ErrorMessage(Frame, "Error", "The client is out of date. Please upgrade it.")
             err.showDialog()
 
             false

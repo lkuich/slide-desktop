@@ -9,8 +9,6 @@ import davinci.Device
 
 class DeviceField(val posX: Int, val posY: Int, var actionListener: ActionListener) extends JPanel {
 
-    def this(posX: Int, posY: Int) = this(posX, posY, null)
-
     this.setLayout(null)
 
     private var ip: String = "localhost"

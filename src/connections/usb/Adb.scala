@@ -14,8 +14,6 @@ object Adb {
 
     var adbFilePath: String = ""
 
-    // def run(): Unit = {
-
     SystemInfo.operatingSystem match {
         case OperatingSystem.WINDOWS => adbFilePath = Const.ADB + SystemInfo.systemExtension
         case OperatingSystem.OSX => adbFilePath = "/Applications/Slide.app/Contents/Resources/" + Const.ADB
@@ -46,7 +44,6 @@ object Adb {
         })
 
     }
-    // }
 
     @throws(classOf[IOException])
     def startAdb() {

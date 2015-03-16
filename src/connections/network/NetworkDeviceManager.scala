@@ -5,7 +5,7 @@ import java.net.SocketException
 
 import davinci.{Master, Device}
 import enums.ConnectionMode
-import gui.Home
+import gui.Frame
 import gui.img.ImageIcons
 
 class NetworkDeviceManager() {
@@ -15,8 +15,8 @@ class NetworkDeviceManager() {
     private var device: Device = null
 
     @throws(classOf[IOException])
-    def connect(ip: String, port: Int): Unit = {
-        ndc = new NetworkDeviceConnection(ip, port)
+    def connect(ip: String): Unit = {
+        ndc = new NetworkDeviceConnection(ip)
         ndc.connect()
     }
 
@@ -31,7 +31,7 @@ class NetworkDeviceManager() {
                 }
                 catch {
                     case e: SocketException =>
-                        Home.showErrorPrompt("Error", "Another instance of Slide is already running.")
+                        Frame.showErrorPrompt("Error", "Another instance of Slide is already running.")
                         System.exit(1)
                 }
 
@@ -39,6 +39,7 @@ class NetworkDeviceManager() {
                     if (!udpDiscovery.networkIsAvailable) {
                         stopBackgroundScanner()
                     }
+
                     device = udpDiscovery.search
                     if (device != null) {
                         dcCount = 0
@@ -78,20 +79,20 @@ class NetworkDeviceManager() {
     def ip: String = device.ip
 
     private def adjustGui(connectionMode: ConnectionMode) {
-        Home.deviceField.show()
+        Frame.deviceField.show()
         if (connectionMode == ConnectionMode.USB) {
             if (device != null) {
                 device.icon = ImageIcons.usbIcon
-                Home.deviceField.setUi(device)
+                Frame.deviceField.setUi(device)
             }
         }
         else {
             device.icon = ImageIcons.wifiIcon
-            Home.deviceField.setUi(device)
+            Frame.deviceField.setUi(device)
         }
     }
 
     private def adjustGui(hidden: Boolean) {
-        Home.deviceField.showDeviceField(hidden)
+        Frame.deviceField.showDeviceField(hidden)
     }
 }

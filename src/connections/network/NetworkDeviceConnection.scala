@@ -4,10 +4,11 @@ import java.io.{ObjectInputStream, IOException}
 import java.net.InetSocketAddress
 
 import connections.BaseDeviceConnection
+import davinci.Const
 
-class NetworkDeviceConnection(val remoteHost: String, val remotePort: Int) extends BaseDeviceConnection {
+class NetworkDeviceConnection(val remoteHost: String) extends BaseDeviceConnection {
 
-    private val inetAddress: InetSocketAddress = new InetSocketAddress(remoteHost, remotePort)
+    private val inetAddress: InetSocketAddress = new InetSocketAddress(remoteHost, Const.NET_PORT)
 
     socket.connect(inetAddress, 2000)
     socket.setTcpNoDelay(true)
@@ -30,7 +31,7 @@ class NetworkDeviceConnection(val remoteHost: String, val remotePort: Int) exten
     }
 
     override def close(): Unit = {
-        onClose()
+        stopRunning()
         input.close()
         socket.close()
     }

@@ -3,7 +3,7 @@ package davinci
 import java.awt.EventQueue
 import java.util
 import enums.ConnectionMode
-import gui.Home
+import gui.Frame
 
 object Master {
     val connections: util.HashSet[ConnectionMode] = new util.HashSet[ConnectionMode]()
@@ -11,7 +11,7 @@ object Master {
     def main(args: Array[String]): Unit = {
         EventQueue.invokeLater( new Runnable {
             override def run(): Unit = {
-                Home.showHome()
+                Frame.showHome()
             }
         })
     }

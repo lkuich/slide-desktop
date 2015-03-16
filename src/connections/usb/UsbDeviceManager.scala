@@ -4,7 +4,7 @@ import java.io.IOException
 import davinci.Device
 import davinci.Master
 import enums.ConnectionMode
-import gui.Home
+import gui.Frame
 import gui.img.ImageIcons
 
 class UsbDeviceManager {
@@ -52,7 +52,7 @@ class UsbDeviceManager {
             }
         })
         if (!Adb.isAdbAvailable) {
-            Home.showErrorPrompt("Error", "ADB not found.")
+            Frame.showErrorPrompt("Error", "ADB not found.")
         }
         else {
             Adb.startAdb()
@@ -65,21 +65,18 @@ class UsbDeviceManager {
     }
 
     private def adjustGui(connectionMode: ConnectionMode) {
-        Home.deviceField.show()
+        Frame.deviceField.show()
         if (connectionMode == ConnectionMode.USB) {
             usbDevice.icon = ImageIcons.usbIcon
-            Home.deviceField.setUi(usbDevice)
+            Frame.deviceField.setUi(usbDevice)
         }
         else {
             usbDevice.icon = ImageIcons.wifiIcon
-            Home.deviceField.setUi(usbDevice)
+            Frame.deviceField.setUi(usbDevice)
         }
     }
 
     private def adjustGui(hidden: Boolean) {
-        Home.deviceField.showDeviceField(hidden)
+        Frame.deviceField.showDeviceField(hidden)
     }
-
-    def isConnected: Boolean =
-        udc != null && udc.connection != null && udc.connection.isConnected
 }
