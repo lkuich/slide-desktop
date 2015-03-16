@@ -16,7 +16,9 @@ object Frame extends JFrame with WindowListener {
     private val middle_x: Int = 250
     private val middle_y: Int = 100
 
-    val deviceField: DeviceField = new DeviceField(middle_x, middle_y, new ActionListener {
+    val deviceField: DeviceField = new DeviceField(middle_x, middle_y,
+        () => packag(),
+        new ActionListener {
         override def actionPerformed(e: ActionEvent): Unit = {
             if (Master.hasConnection(ConnectionMode.USB) || Master.multipleConnections) {
                 try {
@@ -42,7 +44,7 @@ object Frame extends JFrame with WindowListener {
         }
     })
 
-    deviceField.onControlsVisible()
+    private def packag(): Unit = super.pack()
 
     private val usbMan: UsbDeviceManager = new UsbDeviceManager
     private val networkMan: NetworkDeviceManager = new NetworkDeviceManager
@@ -75,8 +77,8 @@ object Frame extends JFrame with WindowListener {
 
     def setLookAndFeel(): Unit = UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName)
 
-    override def windowOpened(e: WindowEvent): Unit =
-        this.setSize(deviceField.maxWidth() + getInsets.left, deviceField.maxHeight() + getInsets.top)
+    override def windowOpened(e: WindowEvent): Unit = packag()
+        //this.setSize(deviceField.maxWidth() + getInsets.left, deviceField.maxHeight() + getInsets.top)
 
     override def windowDeiconified(e: WindowEvent): Unit = {}
 

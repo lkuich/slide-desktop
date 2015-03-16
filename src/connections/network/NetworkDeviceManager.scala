@@ -54,7 +54,7 @@ class NetworkDeviceManager() {
                         }
                     } else {
                         dcCount += 1
-                        if (dcCount >= 3) {
+                        if (dcCount >= 4) {
                             if (Master.hasConnection(ConnectionMode.WIFI)) {
                                 Master.removeConnection(ConnectionMode.WIFI)
                                 if (Master.hasConnection(ConnectionMode.USB)) {

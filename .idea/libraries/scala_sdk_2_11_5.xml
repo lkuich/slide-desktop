@@ -1,0 +1,30 @@
+<component name="libraryTable">
+  <library name="scala-sdk-2.11.5" type="Scala">
+    <properties>
+      <compiler-classpath>
+        <root url="file://C:/Program Files (x86)/scala/lib/scala-compiler.jar" />
+        <root url="file://C:/Program Files (x86)/scala/lib/scala-library.jar" />
+        <root url="file://C:/Program Files (x86)/scala/lib/scala-reflect.jar" />
+      </compiler-classpath>
+    </properties>
+    <CLASSES>
+      <root url="jar://C:/Program Files (x86)/scala/lib/scala-actors-2.11.0.jar!/" />
+      <root url="jar://C:/Program Files (x86)/scala/lib/scala-actors-migration_2.11-1.1.0.jar!/" />
+      <root url="jar://C:/Program Files (x86)/scala/lib/scala-library.jar!/" />
+      <root url="jar://C:/Program Files (x86)/scala/lib/scala-parser-combinators_2.11-1.0.3.jar!/" />
+      <root url="jar://C:/Program Files (x86)/scala/lib/scala-reflect.jar!/" />
+      <root url="jar://C:/Program Files (x86)/scala/lib/scala-swing_2.11-1.0.1.jar!/" />
+      <root url="jar://C:/Program Files (x86)/scala/lib/scala-xml_2.11-1.0.3.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://C:/Program Files (x86)/scala/api/jars/scala-actors-2.11.0-javadoc.jar!/" />
+      <root url="jar://C:/Program Files (x86)/scala/api/jars/scala-actors-migration_2.11-1.1.0-javadoc.jar!/" />
+      <root url="jar://C:/Program Files (x86)/scala/api/jars/scala-library-2.11.5-javadoc.jar!/" />
+      <root url="jar://C:/Program Files (x86)/scala/api/jars/scala-parser-combinators_2.11-1.0.3-javadoc.jar!/" />
+      <root url="jar://C:/Program Files (x86)/scala/api/jars/scala-reflect-2.11.5-javadoc.jar!/" />
+      <root url="jar://C:/Program Files (x86)/scala/api/jars/scala-swing_2.11-1.0.1-javadoc.jar!/" />
+      <root url="jar://C:/Program Files (x86)/scala/api/jars/scala-xml_2.11-1.0.3-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES />
+  </library>
+</component>

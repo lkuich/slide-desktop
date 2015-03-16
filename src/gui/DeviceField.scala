@@ -8,9 +8,10 @@ import connections.usb.Adb
 import davinci.Device
 import net.miginfocom.swing.MigLayout
 
-class DeviceField(val posX: Int, val posY: Int, var actionListener: ActionListener) extends JPanel {
+class DeviceField(val posX: Int, val posY: Int, var onComponentsShown: () => Unit, var actionListener: ActionListener) extends JPanel {
 
     this.setLayout(new MigLayout())
+    this.setFocusable(true)
 
     private val searchingText: String =
         "<html><center>No devices detected<br/><br/>Scanning for devices...</center></html>"
@@ -29,11 +30,11 @@ class DeviceField(val posX: Int, val posY: Int, var actionListener: ActionListen
     private val lblIcon: JLabel = new JLabel(searchingText)
     this.lblIcon.setHorizontalAlignment(SwingConstants.CENTER)
 
-    this.add(lblIcon, "cell 0 0, growy, growx")
-    this.add(manuLabel, "cell 0 1, growx")
-    this.add(nameLabel, "cell 0 2, growx")
-    this.add(ipAddressLabel, "cell 0 3, growx")
-    this.add(connectButton, "cell 0 4, w 150!, growx")
+    this.add(lblIcon, "cell 0 0, grow")
+    this.add(manuLabel, "cell 0 1, grow")
+    this.add(nameLabel, "cell 0 2, grow")
+    this.add(ipAddressLabel, "cell 0 3, grow")
+    this.add(connectButton, "cell 0 4, w 150!, grow")
 
     val alta: KeyBinder = new KeyBinder(KeyEvent.VK_ALT, KeyEvent.VK_A) {
         override def onKeysDown(): Unit = Adb.showAdbDevices()
@@ -44,6 +45,9 @@ class DeviceField(val posX: Int, val posY: Int, var actionListener: ActionListen
 
     this.addKeyListener(alta)
     this.addKeyListener(altl)
+
+    this.connectButton.addKeyListener(alta)
+    this.connectButton.addKeyListener(altl)
 
     this.setVisible(true)
 
@@ -57,10 +61,7 @@ class DeviceField(val posX: Int, val posY: Int, var actionListener: ActionListen
             name = d.model
             manufacturer = d.manufacturer
         }
-        setComponents()
-    }
 
-    private def setComponents() {
         lblIcon.setHorizontalAlignment(SwingConstants.CENTER)
 
         nameLabel.setText(this.name)
@@ -77,14 +78,12 @@ class DeviceField(val posX: Int, val posY: Int, var actionListener: ActionListen
 
         connectButton.setHorizontalAlignment(SwingConstants.CENTER)
 
-        setListeners()
-        this.updateUI()
-    }
-
-    def setListeners() {
         if (connectButton.getActionListeners.length <= 0) {
             connectButton.addActionListener(actionListener)
         }
+
+        this.onComponentsShown()
+        this.updateUI()
     }
 
     def maxWidth(): Int = connectButton.getX + connectButton.getWidth + 10
@@ -93,6 +92,7 @@ class DeviceField(val posX: Int, val posY: Int, var actionListener: ActionListen
     override def show(): Unit = { showDeviceField(visibility = true) }
     def showDeviceField(visibility: Boolean): Unit = {
         if (visibility) {
+            // Controls shown
             this.lblIcon.setText("")
         } else {
             this.lblIcon.setText(searchingText)
