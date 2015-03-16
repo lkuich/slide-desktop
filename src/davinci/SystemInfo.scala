@@ -9,7 +9,7 @@ object SystemInfo {
     var systemExtension: String = ""
     var operatingSystem: OperatingSystem = OperatingSystem.UNKNOWN
 
-    private var chmod: String = ""
+    var chmod: String = ""
 
     val os: String = System.getProperty("os.name").toUpperCase
     val bit: String = System.getProperty("sun.arch.data.model")
@@ -33,13 +33,11 @@ object SystemInfo {
 
     def downloadFile(url: URL, path: File): Unit = {
         if (isConnected(url)) {
-            try {
-                val rbc: ReadableByteChannel = Channels.newChannel(url.openStream)
+            val rbc: ReadableByteChannel = Channels.newChannel(url.openStream)
 
-                val fos: FileOutputStream = new FileOutputStream(path)
-                fos.getChannel.transferFrom(rbc, 0, Long.MaxValue)
-                fos.close()
-            }
+            val fos: FileOutputStream = new FileOutputStream(path)
+            fos.getChannel.transferFrom(rbc, 0, Long.MaxValue)
+            fos.close()
         }
     }
 

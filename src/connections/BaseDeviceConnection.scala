@@ -2,12 +2,13 @@ package connections
 
 import java.awt.{MouseInfo, Point, Robot}
 import java.awt.event.{InputEvent, KeyEvent}
+import java.net.Socket
 
 import davinci.{Const, Settings, UnknownCommandException}
 import enums.{DeviceMessageType, PositioningMode}
 import gui.{ErrorMessage, Home}
 
-abstract class BaseDeviceConnection_S extends DeviceConnection {
+abstract class BaseDeviceConnection extends DeviceConnection {
 
     private var rb: Robot = null
     private var cursorX: Int = 0
@@ -16,14 +17,16 @@ abstract class BaseDeviceConnection_S extends DeviceConnection {
     private var shift: Boolean = false
     private var fingerDown: Boolean = false
 
+    private val _socket: Socket = new Socket
+    def socket: Socket = _socket
+
     def calculateFactor(deviceX: Int, deviceY: Int): Array[Int] = {
         new Array[Int](1)
     }
 
     def getIndex(array: Array[Int], value: Int): Int = {
-        var index: Int = 0
+        var index: Integer = 0
         try {
-            var i: Int = 0
             for (i <- 1 to array.length) {
                 if (array(i) == value) {
                     index = i
@@ -37,12 +40,7 @@ abstract class BaseDeviceConnection_S extends DeviceConnection {
     }
 
     def start(): Boolean = {
-        try {
-            rb = new Robot
-        } catch {
-            case Exception => return false
-        }
-
+        rb = new Robot
         var firstRun: Boolean = true
         while (running) {
             try {
@@ -64,48 +62,48 @@ abstract class BaseDeviceConnection_S extends DeviceConnection {
         val m1: Short = message(Const.X)
         val m2: Short = message(Const.Y)
         DeviceMessageType.fromId(m1) match {
-            case FINGER_DOWN =>
+            case DeviceMessageType.FINGER_DOWN =>
                 this.onFingerDown()
-            case FINGER_TAP =>
+            case DeviceMessageType.FINGER_TAP =>
                 this.onFingerTap()
-            case DOUBLE_DOWN =>
+            case DeviceMessageType.DOUBLE_DOWN =>
                 this.onDoubleDown()
-            case DOUBLE_DOWN_PEN =>
+            case DeviceMessageType.DOUBLE_DOWN_PEN =>
                 this.onDoubleDownPen()
-            case DOUBLE_UP =>
+            case DeviceMessageType.DOUBLE_UP =>
                 this.onDoubleUp()
-            case LONG_HOLD =>
+            case DeviceMessageType.LONG_HOLD =>
                 this.onLongHold()
-            case DOUBLE_TAP =>
+            case DeviceMessageType.DOUBLE_TAP =>
                 this.onDoubleTap()
-            case ZOOM_IN =>
+            case DeviceMessageType.ZOOM_IN =>
                 this.onZoomIn()
-            case ZOOM_OUT =>
+            case DeviceMessageType.ZOOM_OUT =>
                 this.onZoomOut()
-            case SCROLL_UP =>
+            case DeviceMessageType.SCROLL_UP =>
                 this.onScrollUp()
-            case SCROLL_DOWN =>
+            case DeviceMessageType.SCROLL_DOWN =>
                 this.onScrollDown()
-            case SCROLL_LEFT =>
+            case DeviceMessageType.SCROLL_LEFT =>
                 this.onScrollLeft()
-            case SCROLL_RIGHT =>
+            case DeviceMessageType.SCROLL_RIGHT =>
                 this.onScrollRight()
-            case KEYBOARD =>
+            case DeviceMessageType.KEYBOARD =>
                 this.onKeyboard(message(1))
-            case CUT =>
+            case DeviceMessageType.CUT =>
                 this.onCut()
-            case COPY =>
+            case DeviceMessageType.COPY =>
                 this.onCopy()
-            case PASTE =>
+            case DeviceMessageType.PASTE =>
                 this.onPaste()
-            case RELATIVE =>
+            case DeviceMessageType.RELATIVE =>
                 this.onRelative(message(1), message(2))
-            case ABSOLUTE =>
+            case DeviceMessageType.ABSOLUTE =>
                 this.onAbsolute(message(1), message(2), message(3), message(4))
-            case MOVE_CURSOR =>
+            case DeviceMessageType.MOVE_CURSOR =>
                 this.onMoveCursor(m1, m2)
-            case CLOSE =>
-                this.onClose
+            case DeviceMessageType.CLOSE =>
+                this.onClose()
         }
     }
 
@@ -117,7 +115,7 @@ abstract class BaseDeviceConnection_S extends DeviceConnection {
         }
     }
 
-    protected def onClose {
+    protected def onClose() {
         running = false
     }
 
@@ -140,7 +138,7 @@ abstract class BaseDeviceConnection_S extends DeviceConnection {
         if (Const.MIN_VERSION > version) {
             this.close()
 
-            val err: ErrorMessage = new ErrorMessage(Home.getInstance.getFrame, "Error", "The client is out of date. Please upgrade it.")
+            val err: ErrorMessage = new ErrorMessage(Home, "Error", "The client is out of date. Please upgrade it.")
             err.showDialog()
 
             false
@@ -187,7 +185,7 @@ abstract class BaseDeviceConnection_S extends DeviceConnection {
             KeyEvent.VK_EQUALS, KeyEvent.VK_OPEN_BRACKET, KeyEvent.VK_CLOSE_BRACKET, KeyEvent.VK_BACK_SLASH,
             KeyEvent.VK_SEMICOLON, KeyEvent.VK_QUOTE, KeyEvent.VK_SLASH)
 
-        val keyCode: Int = BaseDeviceConnection.getIndex(keyCodes, m2)
+        val keyCode: Integer = getIndex(keyCodes, m2)
         if (keyCode != -1) {
             if (m2 != 59) {
                 if (m2 == 100) {
@@ -207,18 +205,16 @@ abstract class BaseDeviceConnection_S extends DeviceConnection {
 
     protected def onScrollRight(): Unit = {
         rb.keyPress(KeyEvent.VK_SHIFT)
-        try {
-            Thread.sleep(10)
-        }
+
+        Thread.sleep(10)
         onScrollDown()
         rb.keyRelease(KeyEvent.VK_SHIFT)
     }
 
     protected def onScrollLeft(): Unit = {
         rb.keyPress(KeyEvent.VK_SHIFT)
-        try {
-            Thread.sleep(10)
-        }
+
+        Thread.sleep(10)
         onScrollUp()
         rb.keyRelease(KeyEvent.VK_SHIFT)
     }
@@ -229,18 +225,16 @@ abstract class BaseDeviceConnection_S extends DeviceConnection {
 
     protected def onZoomOut(): Unit = {
         rb.keyPress(KeyEvent.VK_CONTROL)
-        try {
-            Thread.sleep(10)
-        }
+
+        Thread.sleep(10)
         rb.mouseWheel(-1)
         rb.keyRelease(KeyEvent.VK_CONTROL)
     }
 
     protected def onZoomIn(): Unit = {
         rb.keyPress(KeyEvent.VK_CONTROL)
-        try {
-            Thread.sleep(10)
-        }
+
+        Thread.sleep(10)
         rb.mouseWheel(1)
         rb.keyRelease(KeyEvent.VK_CONTROL)
     }

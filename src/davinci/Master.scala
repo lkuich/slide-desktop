@@ -11,7 +11,7 @@ object Master {
     def main(args: Array[String]): Unit = {
         EventQueue.invokeLater( new Runnable {
             override def run(): Unit = {
-                Home.getInstance.show()
+                Home.showHome()
             }
         })
     }

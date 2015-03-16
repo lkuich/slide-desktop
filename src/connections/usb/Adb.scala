@@ -72,38 +72,36 @@ object Adb {
 
     def showAdbDevices(): Boolean = {
         var deviceAvailable: Boolean = false
-        try {
-            var command: String = Const.ADB + " devices"
+        var command: String = Const.ADB + " devices"
 
-            if (adbFileIsAvailable && !isAdbInstalled) {
-                command = adbFilePath + " devices"
-            }
+        if (adbFileIsAvailable && !isAdbInstalled) {
+            command = adbFilePath + " devices"
+        }
 
-            val pr: Process = Runtime.getRuntime.exec(command)
+        val pr: Process = Runtime.getRuntime.exec(command)
 
-            val stdInput: BufferedReader =
-                new BufferedReader(new InputStreamReader(pr.getInputStream))
-            val stdError:BufferedReader =
-                new BufferedReader(new InputStreamReader(pr.getErrorStream))
+        val stdInput: BufferedReader =
+            new BufferedReader(new InputStreamReader(pr.getInputStream))
+        val stdError:BufferedReader =
+            new BufferedReader(new InputStreamReader(pr.getErrorStream))
 
-            var consoleOut: String = null
-            val consoleOutput:Console = new Console()
+        var consoleOut: String = null
+        val consoleOutput:Console = new Console()
 
-            while ({ consoleOut = stdInput.readLine(); consoleOut != null }) {
-                if (consoleOut.contains("	device"))
-                {
-                    deviceAvailable = true
-                }
-                consoleOutput.consoleTextField.append(consoleOut + "\n")
-            }
-
-            var errorOut: String = null
-            while ({ errorOut = stdError.readLine(); errorOut != null})
+        while ({ consoleOut = stdInput.readLine(); consoleOut != null }) {
+            if (consoleOut.contains("	device"))
             {
-                consoleOutput.consoleTextField.append(errorOut + "\n")
+                deviceAvailable = true
             }
-            consoleOutput.consoleFrame.setVisible(true);
-            }
+            consoleOutput.consoleTextField.append(consoleOut + "\n")
+        }
+
+        var errorOut: String = null
+        while ({ errorOut = stdError.readLine(); errorOut != null})
+        {
+            consoleOutput.consoleTextField.append(errorOut + "\n")
+        }
+        consoleOutput.consoleFrame.setVisible(true)
 
             deviceAvailable
     }
