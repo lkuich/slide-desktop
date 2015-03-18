@@ -6,7 +6,7 @@ import java.io.IOException
 import javax.swing._
 import connections.network.NetworkDeviceManager
 import connections.usb.UsbDeviceManager
-import davinci.Master
+import davinci.Main
 import enums.ConnectionMode
 
 object Frame extends JFrame with WindowListener {
@@ -20,7 +20,7 @@ object Frame extends JFrame with WindowListener {
         () => packag(),
         new ActionListener {
         override def actionPerformed(e: ActionEvent): Unit = {
-            if (Master.hasConnection(ConnectionMode.USB) || Master.multipleConnections) {
+            if (Main.hasConnection(ConnectionMode.USB) || Main.multipleConnections) {
                 try {
                     usbMan.connect()
                 }
@@ -28,10 +28,10 @@ object Frame extends JFrame with WindowListener {
                     case e @ (_: IOException | _: NullPointerException) =>
                         errorMessage.message = "Could not connect over USB.\nCheck if your device is listed by pressing Alt+A"
                         errorMessage.showDialog()
-                        e.printStackTrace()
+                        e.printStackTrace() /* TODO: Remove */
                 }
             }
-            else if (Master.hasConnection(ConnectionMode.WIFI)) {
+            else if (Main.hasConnection(ConnectionMode.WIFI)) {
                 try {
                     networkMan.connect(networkMan.ip)
                 }
@@ -39,6 +39,7 @@ object Frame extends JFrame with WindowListener {
                     case e @ (_: IOException | _: NullPointerException) =>
                         errorMessage.message = "Could not connect over LAN."
                         errorMessage.showDialog()
+                        e.printStackTrace() /* TODO: Remove */
                 }
             }
         }

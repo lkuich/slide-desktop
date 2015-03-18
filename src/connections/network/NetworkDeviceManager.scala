@@ -3,7 +3,7 @@ package connections.network
 import java.io.IOException
 import java.net.SocketException
 
-import davinci.{Master, Device}
+import davinci.{Main, Device}
 import enums.ConnectionMode
 import gui.Frame
 import gui.img.ImageIcons
@@ -43,9 +43,9 @@ class NetworkDeviceManager() {
                     device = udpDiscovery.search
                     if (device != null) {
                         dcCount = 0
-                        if (!Master.hasConnection(ConnectionMode.WIFI)) {
-                            Master.addConnection(ConnectionMode.WIFI)
-                            if (Master.multipleConnections) {
+                        if (!Main.hasConnection(ConnectionMode.WIFI)) {
+                            Main.addConnection(ConnectionMode.WIFI)
+                            if (Main.multipleConnections) {
                                 adjustGui(ConnectionMode.USB)
                             }
                             else {
@@ -55,9 +55,9 @@ class NetworkDeviceManager() {
                     } else {
                         dcCount += 1
                         if (dcCount >= 4) {
-                            if (Master.hasConnection(ConnectionMode.WIFI)) {
-                                Master.removeConnection(ConnectionMode.WIFI)
-                                if (Master.hasConnection(ConnectionMode.USB)) {
+                            if (Main.hasConnection(ConnectionMode.WIFI)) {
+                                Main.removeConnection(ConnectionMode.WIFI)
+                                if (Main.hasConnection(ConnectionMode.USB)) {
                                     adjustGui(ConnectionMode.USB)
                                 }
                                 else {

@@ -2,7 +2,7 @@ package connections.usb
 
 import java.io.IOException
 import davinci.Device
-import davinci.Master
+import davinci.Main
 import enums.ConnectionMode
 import gui.Frame
 import gui.img.ImageIcons
@@ -27,8 +27,8 @@ class UsbDeviceManager {
                     Thread.sleep(1000)
                     if (Adb.usbAvailable) {
                         dcCount = 0
-                        if (!Master.hasConnection(ConnectionMode.USB)) {
-                            Master.addConnection(ConnectionMode.USB)
+                        if (!Main.hasConnection(ConnectionMode.USB)) {
+                            Main.addConnection(ConnectionMode.USB)
                             adjustGui(ConnectionMode.USB)
                         }
                     }
@@ -36,9 +36,9 @@ class UsbDeviceManager {
                         dcCount += 1
                         if (dcCount >= 2) {
                             if (usbDevice != null) {
-                                if (Master.hasConnection(ConnectionMode.USB)) {
-                                    Master.removeConnection(ConnectionMode.USB)
-                                    if (Master.hasConnection(ConnectionMode.WIFI)) {
+                                if (Main.hasConnection(ConnectionMode.USB)) {
+                                    Main.removeConnection(ConnectionMode.USB)
+                                    if (Main.hasConnection(ConnectionMode.WIFI)) {
                                         adjustGui(ConnectionMode.WIFI)
                                     }
                                     else {

@@ -5,7 +5,7 @@ import java.util
 import enums.ConnectionMode
 import gui.Frame
 
-object Master {
+object Main {
     val connections: util.HashSet[ConnectionMode] = new util.HashSet[ConnectionMode]()
 
     def main(args: Array[String]): Unit = {

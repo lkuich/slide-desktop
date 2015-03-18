@@ -2,7 +2,7 @@ package connections.usb
 
 import java.awt.{Toolkit, Rectangle, Robot}
 import java.awt.image.BufferedImage
-import java.io.{ObjectInputStream, IOException}
+import java.io.{EOFException, ObjectInputStream, IOException}
 import java.net.InetSocketAddress
 import javax.imageio.ImageIO
 
@@ -12,18 +12,21 @@ import enums.DeviceMessageType
 
 class UsbDeviceConnection extends BaseDeviceConnection {
 
-    val inetAddress: InetSocketAddress = new InetSocketAddress("localhost", Const.USB_PORT)
+    private val inetAddress: InetSocketAddress = new InetSocketAddress("localhost", Const.USB_PORT)
 
     socket.connect(inetAddress, 2000)
     socket.setTcpNoDelay(true)
-    socket.setKeepAlive(true)
+    // socket.setKeepAlive(true)
 
-    private val input = new ObjectInputStream(socket.getInputStream)
+    private var input: ObjectInputStream = null
+    try {
+        input = new ObjectInputStream(socket.getInputStream)
+    } catch {
+        case e: Exception => e.printStackTrace()
+    }
 
     @throws[IOException]
-    override def connect(): Boolean = {
-        this.start()
-    }
+    override def connect(): Boolean = this.start()
 
     //** TODO: Below method is EXPARAMENTAL, should move into superclass
     override def handleMessage(message: Array[Short]): Unit = {

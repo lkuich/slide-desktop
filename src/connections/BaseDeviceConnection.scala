@@ -10,7 +10,7 @@ import gui.{ErrorMessage, Frame}
 
 abstract class BaseDeviceConnection extends DeviceConnection {
 
-    private var rb: Robot = null
+    private val rb: Robot = new Robot
     private var cursorX: Int = 0
     private var cursorY: Int = 0
     private var running: Boolean = true
@@ -20,6 +20,7 @@ abstract class BaseDeviceConnection extends DeviceConnection {
     private val _socket: Socket = new Socket
     def socket: Socket = _socket
 
+    /* TODO: */
     def calculateFactor(deviceX: Int, deviceY: Int): Array[Int] = {
         new Array[Int](1)
     }
@@ -40,7 +41,6 @@ abstract class BaseDeviceConnection extends DeviceConnection {
     }
 
     override def start(): Boolean = {
-        rb = new Robot
         var firstRun: Boolean = true
         while (running) {
             try {
@@ -48,6 +48,7 @@ abstract class BaseDeviceConnection extends DeviceConnection {
             } catch {
                 case e: Exception =>
                     this.close()
+                    e.printStackTrace()
                     return false
             }
             firstRun = false
@@ -60,58 +61,38 @@ abstract class BaseDeviceConnection extends DeviceConnection {
         val m1: Short = message(Const.X)
         val m2: Short = message(Const.Y)
         DeviceMessageType.fromId(m1) match {
-            case DeviceMessageType.FINGER_DOWN =>
-                this.onFingerDown()
-            case DeviceMessageType.FINGER_TAP =>
-                this.onFingerTap()
-            case DeviceMessageType.DOUBLE_DOWN =>
-                this.onDoubleDown()
-            case DeviceMessageType.DOUBLE_DOWN_PEN =>
-                this.onDoubleDownPen()
-            case DeviceMessageType.DOUBLE_UP =>
-                this.onDoubleUp()
-            case DeviceMessageType.LONG_HOLD =>
-                this.onLongHold()
-            case DeviceMessageType.DOUBLE_TAP =>
-                this.onDoubleTap()
-            case DeviceMessageType.ZOOM_IN =>
-                this.onZoomIn()
-            case DeviceMessageType.ZOOM_OUT =>
-                this.onZoomOut()
-            case DeviceMessageType.SCROLL_UP =>
-                this.onScrollUp()
-            case DeviceMessageType.SCROLL_DOWN =>
-                this.onScrollDown()
-            case DeviceMessageType.SCROLL_LEFT =>
-                this.onScrollLeft()
-            case DeviceMessageType.SCROLL_RIGHT =>
-                this.onScrollRight()
-            case DeviceMessageType.KEYBOARD =>
-                this.onKeyboard(message(1))
-            case DeviceMessageType.CUT =>
-                this.onCut()
-            case DeviceMessageType.COPY =>
-                this.onCopy()
-            case DeviceMessageType.PASTE =>
-                this.onPaste()
-            case DeviceMessageType.RELATIVE =>
-                this.onRelative(message(1), message(2))
-            case DeviceMessageType.ABSOLUTE =>
-                this.onAbsolute(message(1), message(2), message(3), message(4))
-            case DeviceMessageType.MOVE_CURSOR =>
-                this.onMoveCursor(m1, m2)
-            case DeviceMessageType.CLOSE =>
-                this.stopRunning()
+            case DeviceMessageType.FINGER_DOWN => this.onFingerDown()
+            case DeviceMessageType.FINGER_TAP => this.onFingerTap()
+            case DeviceMessageType.DOUBLE_DOWN => this.onDoubleDown()
+            case DeviceMessageType.DOUBLE_DOWN_PEN => this.onDoubleDownPen()
+            case DeviceMessageType.DOUBLE_UP => this.onDoubleUp()
+            case DeviceMessageType.LONG_HOLD => this.onLongHold()
+            case DeviceMessageType.DOUBLE_TAP => this.onDoubleTap()
+            case DeviceMessageType.ZOOM_IN => this.onZoomIn()
+            case DeviceMessageType.ZOOM_OUT => this.onZoomOut()
+            case DeviceMessageType.SCROLL_UP => this.onScrollUp()
+            case DeviceMessageType.SCROLL_DOWN => this.onScrollDown()
+            case DeviceMessageType.SCROLL_LEFT => this.onScrollLeft()
+            case DeviceMessageType.SCROLL_RIGHT => this.onScrollRight()
+            case DeviceMessageType.KEYBOARD => this.onKeyboard(message(1))
+            case DeviceMessageType.CUT => this.onCut()
+            case DeviceMessageType.COPY => this.onCopy()
+            case DeviceMessageType.PASTE => this.onPaste()
+            case DeviceMessageType.RELATIVE => this.onRelative(message(1), message(2))
+            case DeviceMessageType.ABSOLUTE => this.onAbsolute(message(1), message(2), message(3), message(4))
+            case DeviceMessageType.MOVE_CURSOR => this.onMoveCursor(m1, m2)
+            case DeviceMessageType.CLOSE => this.stopRunning()
         }
     }
 
     protected def stopRunning(): Unit = running = false
 
     protected def onMoveCursor(m1: Short, m2: Short) {
-        if (Settings.positioningMode == PositioningMode.RELATIVE) {
-            val movX: Double = cursorX + m1 * Settings.sensitivity
-            val movY: Double = cursorY + m2 * Settings.sensitivity
-            rb.mouseMove(movX.toInt, movY.toInt)
+        Settings.positioningMode match {
+            case PositioningMode.RELATIVE =>
+                val movX: Double = cursorX + m1 * Settings.sensitivity
+                val movY: Double = cursorY + m2 * Settings.sensitivity
+                rb.mouseMove(movX.toInt, movY.toInt)
         }
     }
 
