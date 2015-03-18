@@ -1,10 +1,9 @@
 package connections.usb
 
 import java.io.{InputStreamReader, BufferedReader, File, IOException}
-import davinci.SystemInfo
+import davinci.{FileManager, SystemInfo, Const}
 import com.android.ddmlib.AndroidDebugBridge.IDeviceChangeListener
 import com.android.ddmlib.{IDevice, AndroidDebugBridge}
-import davinci.Const
 import enums.OperatingSystem
 import gui.Console
 
@@ -15,7 +14,13 @@ object Adb {
     var adbFilePath: String = ""
 
     SystemInfo.operatingSystem match {
-        case OperatingSystem.WINDOWS => adbFilePath = Const.ADB + SystemInfo.systemExtension
+        case OperatingSystem.WINDOWS =>
+            adbFilePath = Const.ADB + SystemInfo.systemExtension
+            if (!adbFileIsAvailable) {
+                FileManager.downloadFile(Const.MAINT_BASE + "adb/win/adb.exe", "adb.exe")
+                FileManager.downloadFile(Const.MAINT_BASE + "adb/win/AdbWinApi.dll", "AdbWinApi.dll")
+                FileManager.downloadFile(Const.MAINT_BASE + "adb/win/AdbWinUsbApi.dll", "AdbWinUsbApi.dll")
+            }
         case OperatingSystem.OSX => adbFilePath = "/Applications/Slide.app/Contents/Resources/" + Const.ADB
         case _ => adbFilePath = "./" + Const.ADB
     }
@@ -59,6 +64,7 @@ object Adb {
     }
 
     def adbFileIsAvailable: Boolean = {
+        println(adbFilePath)
         val adbFile: File = new File(adbFilePath)
         adbFile.exists
     }
