@@ -4,7 +4,7 @@ import enums.{PositioningMode, ConnectionMode}
 
 object Settings
 {
-    var sensitivity: Double = 1
+    var sensitivity: Double = 1.0
     private val _scale: Array[Short] = new Array[Short](1)
     var connectionMode: ConnectionMode = ConnectionMode.WIFI
     var positioningMode: PositioningMode = PositioningMode.RELATIVE

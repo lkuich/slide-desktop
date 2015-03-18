@@ -2,7 +2,7 @@ package connections.usb
 
 import java.awt.{Toolkit, Rectangle, Robot}
 import java.awt.image.BufferedImage
-import java.io.{EOFException, ObjectInputStream, IOException}
+import java.io.{ObjectInputStream, IOException}
 import java.net.InetSocketAddress
 import javax.imageio.ImageIO
 
@@ -18,12 +18,7 @@ class UsbDeviceConnection extends BaseDeviceConnection {
     socket.setTcpNoDelay(true)
     // socket.setKeepAlive(true)
 
-    private var input: ObjectInputStream = null
-    try {
-        input = new ObjectInputStream(socket.getInputStream)
-    } catch {
-        case e: Exception => e.printStackTrace()
-    }
+    private val input: ObjectInputStream = new ObjectInputStream(socket.getInputStream)
 
     @throws[IOException]
     override def connect(): Boolean = this.start()

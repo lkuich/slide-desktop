@@ -28,7 +28,7 @@ abstract class BaseDeviceConnection extends DeviceConnection {
     def getIndex(array: Array[Int], value: Int): Int = {
         var index: Integer = 0
         try {
-            for (i <- 1 to array.length) {
+            for (i <- 0 to array.length - 1) {
                 if (array(i) == value) {
                     index = i
                 }
@@ -99,7 +99,7 @@ abstract class BaseDeviceConnection extends DeviceConnection {
     protected def onAbsolute(x: Short, y: Short, sensitivity: Short, version: Short) {
         if (isUptoDate(version)) {
             Settings.positioningMode = PositioningMode.ABSOLUTE
-            Settings.sensitivity = (sensitivity / 10).toDouble
+            Settings.sensitivity = sensitivity.toDouble / 10
             Settings.scale_=(x, y)
         }
     }
@@ -107,7 +107,7 @@ abstract class BaseDeviceConnection extends DeviceConnection {
     protected def onRelative(sensitivity: Short, version: Short) {
         if (isUptoDate(version)) {
             Settings.positioningMode = PositioningMode.RELATIVE
-            Settings.sensitivity = (sensitivity / 10).toDouble
+            Settings.sensitivity = sensitivity.toDouble / 10
         }
     }
 
