@@ -1,18 +1,16 @@
 package davinci
 
-import java.io.{FileOutputStream, File}
-import java.nio.channels.{Channels, ReadableByteChannel}
+import java.net.NetworkInterface
+import java.util
 
-import enums.OperatingSystem, java.net.{URLConnection, URL}
+import enums.OperatingSystem
 
 object SystemInfo {
+    private val os: String = System.getProperty("os.name").toUpperCase
+    private val bit: String = System.getProperty("sun.arch.data.model")
     var systemExtension: String = ""
     var operatingSystem: OperatingSystem = OperatingSystem.UNKNOWN
-
     var chmod: String = ""
-
-    val os: String = System.getProperty("os.name").toUpperCase
-    val bit: String = System.getProperty("sun.arch.data.model")
 
     if (os.toUpperCase.contains("WIN")) {
         chmod = ""
@@ -31,25 +29,16 @@ object SystemInfo {
         "nix" + "_" + bit
     }
 
-    def downloadFile(url: URL, path: File): Unit = {
-        if (isConnected(url)) {
-            val rbc: ReadableByteChannel = Channels.newChannel(url.openStream)
-
-            val fos: FileOutputStream = new FileOutputStream(path)
-            fos.getChannel.transferFrom(rbc, 0, Long.MaxValue)
-            fos.close()
+    /**
+     * @return Whether or not the system has a NIC
+     */
+    def isNetworkIsAvailable: Boolean = {
+        val interfaces: util.Enumeration[NetworkInterface] = NetworkInterface.getNetworkInterfaces
+        while (interfaces.hasMoreElements) {
+            val interf: NetworkInterface = interfaces.nextElement()
+            if (interf.isUp && !interf.isLoopback)
+                return true
         }
-    }
-
-    def isConnected(site: URL): Boolean = {
-        try {
-            val conn: URLConnection = site.openConnection
-            conn.setConnectTimeout(5000)
-            conn.getContent
-            true
-        }
-        catch {
-            case e2: Exception => false
-        }
+        false
     }
 }

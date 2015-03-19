@@ -1,17 +1,16 @@
 package connections.network
 
-import java.io.{ObjectInputStream, IOException}
+import java.io.{IOException, ObjectInputStream}
 import java.net.InetSocketAddress
 
 import connections.BaseDeviceConnection
 import davinci.Const
 
-class NetworkDeviceConnection(val remoteHost: String) extends BaseDeviceConnection {
+class NetworkDeviceConnection(val ip: String) extends BaseDeviceConnection {
 
-    private val inetAddress: InetSocketAddress = new InetSocketAddress(remoteHost, Const.NET_PORT)
+    private val inetAddress: InetSocketAddress = new InetSocketAddress(ip, Const.NET_PORT)
 
-    socket.connect(inetAddress, 2000)
-    socket.setTcpNoDelay(true)
+    super.socket.connect(inetAddress, 4000)
 
     private val input = new ObjectInputStream(socket.getInputStream)
 

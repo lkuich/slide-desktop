@@ -5,10 +5,16 @@ import java.net.{DatagramPacket, DatagramSocket}
 import davinci.Device
 import gui.img.ImageIcons
 
+// TODO: Don't want to reference the GUI package
+
 class BroadcastManager extends DatagramSocket(5000) {
 
     this.setSoTimeout(1000)
 
+    /**
+     * Starts searching for devices on the network.
+     * @return  First detected device.
+     */
     def search: Device = {
         val receiveData: Array[Byte] = new Array[Byte](1024)
 
@@ -23,7 +29,4 @@ class BroadcastManager extends DatagramSocket(5000) {
             case e: Exception => null
         }
     }
-
-    // TODO: Implement this later
-    def networkIsAvailable: Boolean = true
 }

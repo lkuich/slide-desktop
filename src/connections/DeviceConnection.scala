@@ -5,6 +5,7 @@ import java.io.IOException
 trait DeviceConnection {
     @throws[IOException]
     def connect(): Boolean
+
     def close(): Unit
 
     @throws[IOException]

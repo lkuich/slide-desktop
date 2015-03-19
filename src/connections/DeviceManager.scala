@@ -1,14 +1,14 @@
 package connections
 
-import davinci.Device
-import enums.ConnectionMode
+import java.io.IOException
 
-abstract class DeviceManager {
-    var device: Device = null
+trait DeviceManager {
+    @throws(classOf[IOException])
+    protected def connect(ip: String): Unit
 
-    def onUsbConnectionAdded(): Unit = ???
-    def onUsbConnectionRemoved(): Unit = ???
+    protected def startBackgroundScanner(): Unit
 
-    def onWifiConnectionAdded(): Unit = ???
-    def onWifiConnectionRemoved(): Unit = ???
+    protected def stopBackgroundScanner(): Unit
+
+    protected def throwError(message: String): Unit
 }

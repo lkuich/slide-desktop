@@ -1,12 +1,12 @@
 package enums;
 
+import davinci.Const;
+
 import java.util.HashMap;
 import java.util.Map;
 
-import davinci.Const;
+public enum DeviceMessageType {
 
-public enum DeviceMessageType
-{
     CLOSE(Const.DEVICE_MESSAGE_ID_BASE() + 2),
     FINGER_DOWN(Const.DEVICE_MESSAGE_ID_BASE() + 3),
     FINGER_TAP(Const.DEVICE_MESSAGE_ID_BASE() + 4),
@@ -34,35 +34,28 @@ public enum DeviceMessageType
 
     private static Map<Integer, DeviceMessageType> messageTypeById;
 
-    private DeviceMessageType(int messageId)
-    {
+    private DeviceMessageType(int messageId) {
         this.id = messageId;
     }
 
 
-    public int toId()
-    {
+    public int toId() {
         return this.id;
     }
 
-    private static void indexMessageTypeById()
-    {
+    private static void indexMessageTypeById() {
         messageTypeById = new HashMap<>();
-        for (DeviceMessageType messageType : values())
-        {
+        for (DeviceMessageType messageType : values()) {
             messageTypeById.put(messageType.toId(), messageType);
         }
     }
 
-    public static DeviceMessageType fromId(final int code)
-    {
-        if (code <= Const.DEVICE_MESSAGE_ID_BASE())
-        {
+    public static DeviceMessageType fromId(final int code) {
+        if (code <= Const.DEVICE_MESSAGE_ID_BASE()) {
             return MOVE_CURSOR;
         }
 
-        if (messageTypeById == null)
-        {
+        if (messageTypeById == null) {
             indexMessageTypeById();
         }
 

@@ -1,7 +1,6 @@
 package enums;
 
-public enum ConnectionMode
-{
+public enum ConnectionMode {
     WIFI,
     USB
 }

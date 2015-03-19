@@ -2,6 +2,7 @@ package gui.img
 
 import java.net.URL
 import javax.swing.ImageIcon
+
 import enums.ConnectionMode
 
 object ImageIcons {

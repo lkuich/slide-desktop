@@ -1,7 +1,6 @@
 package enums;
 
-public enum OperatingSystem
-{
+public enum OperatingSystem {
     UNKNOWN,
     WINDOWS,
     OSX,

@@ -1,6 +1,6 @@
 package gui
 
-import java.awt.event.{KeyListener, KeyEvent}
+import java.awt.event.{KeyEvent, KeyListener}
 import java.util
 
 abstract class KeyBinder(val keyCodes: Int*) extends KeyListener {

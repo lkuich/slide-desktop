@@ -1,7 +1,6 @@
 package enums;
 
-public enum PositioningMode
-{
+public enum PositioningMode {
     RELATIVE,
     ABSOLUTE
 }

@@ -1,23 +1,23 @@
 package connections
 
-import java.awt.{MouseInfo, Point, Robot}
 import java.awt.event.{InputEvent, KeyEvent}
+import java.awt.{MouseInfo, Point, Robot}
 import java.net.Socket
 
 import davinci.{Const, Settings, UnknownCommandException}
 import enums.{DeviceMessageType, PositioningMode}
-import gui.{ErrorMessage, Frame}
 
 abstract class BaseDeviceConnection extends DeviceConnection {
 
     private val rb: Robot = new Robot
+    private val _socket: Socket = new Socket
     private var cursorX: Int = 0
     private var cursorY: Int = 0
     private var running: Boolean = true
     private var shift: Boolean = false
     private var fingerDown: Boolean = false
+    socket.setTcpNoDelay(true)
 
-    private val _socket: Socket = new Socket
     def socket: Socket = _socket
 
     /* TODO: */
@@ -55,6 +55,8 @@ abstract class BaseDeviceConnection extends DeviceConnection {
         }
         false
     }
+
+    def onClientOutOfDate(): Unit = {}
 
     @throws(classOf[UnknownCommandException])
     protected def handleMessage(message: Array[Short]) {
@@ -115,8 +117,7 @@ abstract class BaseDeviceConnection extends DeviceConnection {
         if (Const.MIN_VERSION > version) {
             this.close()
 
-            val err: ErrorMessage = new ErrorMessage(Frame, "Error", "The client is out of date. Please upgrade it.")
-            err.showDialog()
+            onClientOutOfDate()
 
             false
         }

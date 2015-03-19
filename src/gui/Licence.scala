@@ -3,7 +3,7 @@ package gui
 import java.awt.{BorderLayout, Insets}
 import java.io.InputStream
 import java.util.Scanner
-import javax.swing.{ScrollPaneConstants, JScrollPane, JTextArea, JFrame}
+import javax.swing.{JFrame, JScrollPane, JTextArea, ScrollPaneConstants}
 
 object Licence extends JFrame {
     val istream: InputStream = getClass.getResourceAsStream("licence-gpl.txt")
@@ -18,10 +18,12 @@ object Licence extends JFrame {
     textField.setAlignmentX(0)
     textField.setText(licenseText)
     textField.setCaretPosition(0)
-    val scroll: JScrollPane = new JScrollPane(textField, ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER)
 
     this.add(textField, BorderLayout.CENTER)
-    //this.getContentPane.add(scroll)
+
+    val scroll: JScrollPane = new JScrollPane(textField,
+        ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER)
+    this.getContentPane.add(scroll)
 
     def showLicense(): Unit = this.setVisible(true)
 }

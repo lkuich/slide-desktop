@@ -1,22 +1,21 @@
 package connections.usb
 
-import java.awt.{Toolkit, Rectangle, Robot}
-import java.awt.image.BufferedImage
-import java.io.{ObjectInputStream, IOException}
+import java.io.{IOException, ObjectInputStream}
 import java.net.InetSocketAddress
-import javax.imageio.ImageIO
 
 import connections.BaseDeviceConnection
 import davinci.Const
-import enums.DeviceMessageType
 
-class UsbDeviceConnection extends BaseDeviceConnection {
+class UsbDeviceConnection(val ip: String) extends BaseDeviceConnection {
 
-    private val inetAddress: InetSocketAddress = new InetSocketAddress("localhost", Const.USB_PORT)
+    /** Forward ADB before every connection */
+    Adb.startAdb()
 
-    socket.connect(inetAddress, 2000)
-    socket.setTcpNoDelay(true)
-    // socket.setKeepAlive(true)
+    /** IP to connect to */
+    private val inetAddress: InetSocketAddress = new InetSocketAddress(ip, Const.USB_PORT)
+
+    /** Connect to IP, 2000ms timeout */
+    super.socket.connect(inetAddress, 2000)
 
     private val input: ObjectInputStream = new ObjectInputStream(socket.getInputStream)
 
@@ -24,7 +23,7 @@ class UsbDeviceConnection extends BaseDeviceConnection {
     override def connect(): Boolean = this.start()
 
     //** TODO: Below method is EXPARAMENTAL, should move into superclass
-    override def handleMessage(message: Array[Short]): Unit = {
+    /* override def handleMessage(message: Array[Short]): Unit = {
         if (DeviceMessageType.fromId(message(0)) == DeviceMessageType.SCREEN_SHOT) {
             this.onScreenShot()
         }
@@ -42,7 +41,7 @@ class UsbDeviceConnection extends BaseDeviceConnection {
             case e: IOException =>
                 throw new RuntimeException("Failed to write screen shot.", e)
         }
-    }
+    } */
     //** TODO: END EXPARAMENTAL
 
     @throws[IOException]
@@ -55,6 +54,9 @@ class UsbDeviceConnection extends BaseDeviceConnection {
         }
     }
 
+    /**
+     * Closes the connection.
+     */
     override def close(): Unit = {
         stopRunning()
         if (input != null) {

@@ -1,10 +1,10 @@
 package davinci
 
-import java.io.{FileOutputStream, File}
-import java.net.{URLConnection, URL}
+import java.io.{File, FileOutputStream}
+import java.net.{URL, URLConnection}
 import java.nio.channels.{Channels, ReadableByteChannel}
 
-abstract class FileManager {
+class FileManager {
 
     var currentFile: String = ""
     var numberOfDownloads: Int = 0
@@ -51,6 +51,7 @@ abstract class FileManager {
     }
 
     def onDownloadStart(): Unit = {}
+
     def onDownloadFinished(): Unit = {}
 
     // var onDownloadStart: () => Unit = null
