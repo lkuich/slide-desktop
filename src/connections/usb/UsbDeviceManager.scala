@@ -1,15 +1,16 @@
 package connections.usb
 
 import java.io.IOException
+import connections.{ConnectionManager, DeviceManager}
 import davinci.Device
 import davinci.Main
 import enums.ConnectionMode
 import gui.Frame
 import gui.img.ImageIcons
 
-class UsbDeviceManager {
+abstract class UsbDeviceManager extends DeviceManager {
+
     private var udc: UsbDeviceConnection = null
-    private var usbDevice: Device = null
     private var backgroundScannerRunning: Boolean = true
 
     @throws(classOf[IOException])
@@ -21,25 +22,28 @@ class UsbDeviceManager {
     def startBackgroundScanner():Unit = {
         val t: Thread = new Thread( new Runnable {
             def run() {
-                usbDevice = new Device(ImageIcons.usbIcon, Array[String]("USB", "USB", "USB"))
+                device = new Device(ImageIcons.usbIcon, Array[String]("USB", "USB", "USB"))
                 var dcCount: Int = 0
                 while (backgroundScannerRunning) {
                     Thread.sleep(1000)
                     if (Adb.usbAvailable) {
                         dcCount = 0
                         if (!Main.hasConnection(ConnectionMode.USB)) {
-                            Main.addConnection(ConnectionMode.USB)
+                            ConnectionManager.addConnection(ConnectionMode.USB)
+                            onUsbConnectionAdded()
                             adjustGui(ConnectionMode.USB)
                         }
                     }
                     else {
                         dcCount += 1
                         if (dcCount >= 2) {
-                            if (usbDevice != null) {
+                            if (device != null) {
                                 if (Main.hasConnection(ConnectionMode.USB)) {
-                                    Main.removeConnection(ConnectionMode.USB)
+                                    onUsbConnectionRemoved()
+                                    Main.removeConnection(ConnectionMode.USB) // Remove
                                     if (Main.hasConnection(ConnectionMode.WIFI)) {
                                         adjustGui(ConnectionMode.WIFI)
+                                        Frame.deviceField.showDeviceField(hidden)
                                     }
                                     else {
                                         adjustGui(hidden = false)
@@ -53,8 +57,7 @@ class UsbDeviceManager {
         })
         if (!Adb.isAdbAvailable) {
             Frame.showErrorPrompt("Error", "ADB not found.")
-        }
-        else {
+        } else {
             Adb.startAdb()
             t.start()
         }
@@ -62,21 +65,5 @@ class UsbDeviceManager {
 
     def stopBackgroundScanner():Unit = {
         backgroundScannerRunning = false
-    }
-
-    private def adjustGui(connectionMode: ConnectionMode) {
-        Frame.deviceField.show()
-        if (connectionMode == ConnectionMode.USB) {
-            usbDevice.icon = ImageIcons.usbIcon
-            Frame.deviceField.setUi(usbDevice)
-        }
-        else {
-            usbDevice.icon = ImageIcons.wifiIcon
-            Frame.deviceField.setUi(usbDevice)
-        }
-    }
-
-    private def adjustGui(hidden: Boolean) {
-        Frame.deviceField.showDeviceField(hidden)
     }
 }

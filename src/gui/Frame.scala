@@ -4,23 +4,25 @@ import java.awt.BorderLayout
 import java.awt.event.{WindowEvent, ActionEvent, ActionListener, WindowListener}
 import java.io.IOException
 import javax.swing._
+import connections.ConnectionManager
 import connections.network.NetworkDeviceManager
-import connections.usb.UsbDeviceManager
-import davinci.Main
+import connections.usb.{Adb, UsbDeviceManager}
+import davinci.{Device, FileManager}
 import enums.ConnectionMode
+import gui.img.ImageIcons
 
 object Frame extends JFrame with WindowListener {
 
     this.setLookAndFeel()
 
-    private val middle_x: Int = 250
-    private val middle_y: Int = 100
+    // Can implement onDownloadStart, and onDownloadFinish
+    val fm: FileManager = new FileManager{}
+    Adb.init(fm)
 
-    val deviceField: DeviceField = new DeviceField(middle_x, middle_y,
-        () => packag(),
+    val deviceField: DeviceField = new DeviceField(() => super.pack(),
         new ActionListener {
         override def actionPerformed(e: ActionEvent): Unit = {
-            if (Main.hasConnection(ConnectionMode.USB) || Main.multipleConnections) {
+            if (ConnectionManager.hasConnection(ConnectionMode.USB) || ConnectionManager.multipleConnections) {
                 try {
                     usbMan.connect()
                 }
@@ -31,7 +33,7 @@ object Frame extends JFrame with WindowListener {
                         e.printStackTrace() /* TODO: Remove */
                 }
             }
-            else if (Main.hasConnection(ConnectionMode.WIFI)) {
+            else if (ConnectionManager.hasConnection(ConnectionMode.WIFI)) {
                 try {
                     networkMan.connect(networkMan.ip)
                 }
@@ -45,9 +47,23 @@ object Frame extends JFrame with WindowListener {
         }
     })
 
-    private def packag(): Unit = super.pack()
+    def onConnectionAdded(device: Device, connectionMode: ConnectionMode): Unit = {
+        deviceField.show()
+        if (connectionMode == ConnectionMode.USB) {
+            device.icon = ImageIcons.usbIcon
+            deviceField.setUi(device)
+        }
+        else {
+            device.icon = ImageIcons.wifiIcon
+            deviceField.setUi(device)
+        }
+    }
 
-    private val usbMan: UsbDeviceManager = new UsbDeviceManager
+    protected val onConnectionRemoved: () => Unit = ???
+
+    private val usbMan: UsbDeviceManager = new UsbDeviceManager {
+        override
+    }
     private val networkMan: NetworkDeviceManager = new NetworkDeviceManager
 
     private val errorMessage: ErrorMessage = new ErrorMessage(this, "Connection Error")
@@ -78,8 +94,7 @@ object Frame extends JFrame with WindowListener {
 
     def setLookAndFeel(): Unit = UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName)
 
-    override def windowOpened(e: WindowEvent): Unit = packag()
-        //this.setSize(deviceField.maxWidth() + getInsets.left, deviceField.maxHeight() + getInsets.top)
+    override def windowOpened(e: WindowEvent): Unit = super.pack()
 
     override def windowDeiconified(e: WindowEvent): Unit = {}
 

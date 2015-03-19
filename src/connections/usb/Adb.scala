@@ -8,46 +8,51 @@ import enums.OperatingSystem
 import gui.Console
 
 object Adb {
+
     private var isAdbInstalled: Boolean = false
     var usbAvailable: Boolean = false
 
     var adbFilePath: String = ""
 
-    SystemInfo.operatingSystem match {
-        case OperatingSystem.WINDOWS =>
-            adbFilePath = Const.ADB + SystemInfo.systemExtension
-            if (!adbFileIsAvailable) {
-                FileManager.downloadFile(Const.MAINT_BASE + "adb/win/adb.exe", "adb.exe")
-                FileManager.downloadFile(Const.MAINT_BASE + "adb/win/AdbWinApi.dll", "AdbWinApi.dll")
-                FileManager.downloadFile(Const.MAINT_BASE + "adb/win/AdbWinUsbApi.dll", "AdbWinUsbApi.dll")
+    private var called: Boolean = false
+    def init(fileManager: FileManager): Unit = {
+        if (!called) {
+            SystemInfo.operatingSystem match {
+                case OperatingSystem.WINDOWS =>
+                    adbFilePath = Const.ADB + SystemInfo.systemExtension
+                    if (!adbFileIsAvailable) {
+                        fileManager.downloadFile(Const.MAINT_BASE + "adb/win/adb.exe", "adb.exe")
+                        fileManager.downloadFile(Const.MAINT_BASE + "adb/win/AdbWinApi.dll", "AdbWinApi.dll")
+                        fileManager.downloadFile(Const.MAINT_BASE + "adb/win/AdbWinUsbApi.dll", "AdbWinUsbApi.dll")
+                    }
+                case OperatingSystem.OSX => adbFilePath = "/Applications/Slide.app/Contents/Resources/" + Const.ADB
+                case _ => adbFilePath = "./" + Const.ADB
             }
-        case OperatingSystem.OSX => adbFilePath = "/Applications/Slide.app/Contents/Resources/" + Const.ADB
-        case _ => adbFilePath = "./" + Const.ADB
-    }
+            called = true
+        }
 
-    var command: String = Const.ADB
-    if (adbFileIsAvailable && !isAdbInstalled) {
-        command = adbFilePath
-    }
+        var command: String = Const.ADB
+        if (adbFileIsAvailable && !isAdbInstalled) {
+            command = adbFilePath
+        }
 
-    AndroidDebugBridge.init(false)
-    val debugBridge: AndroidDebugBridge = AndroidDebugBridge.createBridge(command, true)
-    isAdbInstalled = debugBridge != null
+        AndroidDebugBridge.init(false)
+        val debugBridge: AndroidDebugBridge = AndroidDebugBridge.createBridge(command, true)
+        isAdbInstalled = debugBridge.getDevices.length < 0
 
-    if (isAdbInstalled) {
+        if (isAdbInstalled) {
+            AndroidDebugBridge.addDeviceChangeListener(new IDeviceChangeListener {
+                override def deviceChanged(device: IDevice, arg: Int) {}
 
-        AndroidDebugBridge.addDeviceChangeListener(new IDeviceChangeListener {
-            override def deviceChanged(device: IDevice, arg: Int) {}
+                override def deviceConnected(device: IDevice) {
+                    usbAvailable = true
+                }
 
-            override def deviceConnected(device: IDevice) {
-                usbAvailable = true
-            }
-
-            override def deviceDisconnected(device: IDevice) {
-                usbAvailable = false
-            }
-        })
-
+                override def deviceDisconnected(device: IDevice) {
+                    usbAvailable = false
+                }
+            })
+        }
     }
 
     @throws(classOf[IOException])
@@ -59,12 +64,16 @@ object Adb {
             if (SystemInfo.chmod != "") {
                 new ProcessBuilder("chmod", SystemInfo.chmod, adbFilePath).start
             }
-            new ProcessBuilder(adbFilePath, "forward", "tcp:" + Const.USB_PORT, "tcp:" + Const.USB_PORT).start
+
+            try {
+                new ProcessBuilder(adbFilePath, "forward", "tcp:" + Const.USB_PORT, "tcp:" + Const.USB_PORT).start
+            } catch {
+                case e: Exception => println("ADB is unavailable")
+            }
         }
     }
 
     def adbFileIsAvailable: Boolean = {
-        println(adbFilePath)
         val adbFile: File = new File(adbFilePath)
         adbFile.exists
     }
@@ -81,31 +90,35 @@ object Adb {
             command = adbFilePath + " devices"
         }
 
-        val pr: Process = Runtime.getRuntime.exec(command)
-
-        val stdInput: BufferedReader =
-            new BufferedReader(new InputStreamReader(pr.getInputStream))
-        val stdError:BufferedReader =
-            new BufferedReader(new InputStreamReader(pr.getErrorStream))
+        val consoleOutput: Console = new Console()
 
         var consoleOut: String = null
-        val consoleOutput:Console = new Console()
+        var stdInput: BufferedReader = null
+        var stdError: BufferedReader = null
+        if (adbFileIsAvailable) {
+            val pr: Process = Runtime.getRuntime.exec(command)
 
-        while ({ consoleOut = stdInput.readLine(); consoleOut != null }) {
-            if (consoleOut.contains("	device"))
-            {
-                deviceAvailable = true
+            stdInput = new BufferedReader(new InputStreamReader(pr.getInputStream))
+            stdError = new BufferedReader(new InputStreamReader(pr.getErrorStream))
+
+            while ({ consoleOut = stdInput.readLine(); consoleOut != null }) {
+                if (consoleOut.contains("	device"))
+                {
+                    deviceAvailable = true
+                }
+                consoleOutput.append(consoleOut)
             }
-            consoleOutput.consoleTextField.append(consoleOut + "\n")
-        }
 
-        var errorOut: String = null
-        while ({ errorOut = stdError.readLine(); errorOut != null})
-        {
-            consoleOutput.consoleTextField.append(errorOut + "\n")
+            var errorOut: String = null
+            while ({ errorOut = stdError.readLine(); errorOut != null})
+            {
+                consoleOutput.append(errorOut)
+            }
+        } else {
+            consoleOutput.append("Error: ADB is not installed")
         }
-        consoleOutput.consoleFrame.setVisible(true)
+        consoleOutput.show()
 
-            deviceAvailable
+        deviceAvailable
     }
 }

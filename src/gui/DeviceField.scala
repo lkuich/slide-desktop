@@ -8,7 +8,7 @@ import connections.usb.Adb
 import davinci.Device
 import net.miginfocom.swing.MigLayout
 
-class DeviceField(val posX: Int, val posY: Int, var onComponentsShown: () => Unit, var actionListener: ActionListener) extends JPanel {
+class DeviceField(var onComponentsShown: () => Unit, var actionListener: ActionListener) extends JPanel {
 
     this.setLayout(new MigLayout())
     this.setFocusable(true)
