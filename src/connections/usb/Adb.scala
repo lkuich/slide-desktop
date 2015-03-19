@@ -38,9 +38,9 @@ object Adb {
 
         AndroidDebugBridge.init(false)
         val debugBridge: AndroidDebugBridge = AndroidDebugBridge.createBridge(command, true)
-        isAdbInstalled = debugBridge.getDevices.length < 0
+        isAdbInstalled = debugBridge.getDevices.length > 0
 
-        if (isAdbInstalled) {
+        if (isAdbAvailable) {
             AndroidDebugBridge.addDeviceChangeListener(new IDeviceChangeListener {
                 override def deviceChanged(device: IDevice, arg: Int) {}
 

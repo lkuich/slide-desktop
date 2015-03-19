@@ -4,10 +4,10 @@ import java.awt.BorderLayout
 import java.awt.event.{WindowEvent, ActionEvent, ActionListener, WindowListener}
 import java.io.IOException
 import javax.swing._
-import connections.ConnectionManager
+import connections.{DeviceManager, ConnectionManager}
 import connections.network.NetworkDeviceManager
 import connections.usb.{Adb, UsbDeviceManager}
-import davinci.{Device, FileManager}
+import davinci.{Main, Device, FileManager}
 import enums.ConnectionMode
 import gui.img.ImageIcons
 
@@ -41,30 +41,66 @@ object Frame extends JFrame with WindowListener {
                     case e @ (_: IOException | _: NullPointerException) =>
                         errorMessage.message = "Could not connect over LAN."
                         errorMessage.showDialog()
-                        e.printStackTrace() /* TODO: Remove */
                 }
             }
         }
     })
 
     def onConnectionAdded(device: Device, connectionMode: ConnectionMode): Unit = {
-        deviceField.show()
-        if (connectionMode == ConnectionMode.USB) {
+        ConnectionManager.addConnection(connectionMode)
+
+        if (ConnectionManager.multipleConnections) {
             device.icon = ImageIcons.usbIcon
-            deviceField.setUi(device)
+        } else {
+            connectionMode match {
+                case ConnectionMode.USB =>
+                    device.icon = ImageIcons.usbIcon
+                case ConnectionMode.WIFI =>
+                    device.icon = ImageIcons.wifiIcon
+            }
         }
-        else {
-            device.icon = ImageIcons.wifiIcon
-            deviceField.setUi(device)
-        }
+
+        deviceField.show()
+        deviceField.setUi(device)
     }
 
-    protected val onConnectionRemoved: () => Unit = ???
+    def onConnectionRemoved(device: Device, connectionMode: ConnectionMode): Unit = {
+        if (ConnectionManager.multipleConnections) {
+            deviceField.showDeviceField(visibility = true)
+
+            connectionMode match {
+                case ConnectionMode.USB =>
+                    device.icon = ImageIcons.wifiIcon
+                case ConnectionMode.WIFI =>
+                    device.icon = ImageIcons.usbIcon
+            }
+        } else {
+            deviceField.showDeviceField(visibility = false)
+        }
+
+        ConnectionManager.removeConnection(connectionMode)
+        deviceField.setUi(device)
+    }
 
     private val usbMan: UsbDeviceManager = new UsbDeviceManager {
-        override
+        override def onUsbConnectionAdded(): Unit = {
+            onConnectionAdded(device, ConnectionMode.USB)
+        }
+
+        override def onUsbConnectionRemoved(): Unit = {
+            onConnectionRemoved(device, ConnectionMode.USB)
+        }
     }
-    private val networkMan: NetworkDeviceManager = new NetworkDeviceManager
+    
+    private val networkMan: NetworkDeviceManager = new NetworkDeviceManager {
+        override def onWifiConnectionAdded(): Unit = {
+            onConnectionAdded(device, ConnectionMode.WIFI)
+        }
+
+        override def onWifiConnectionRemoved(): Unit = {
+            onConnectionRemoved(device, ConnectionMode.WIFI)
+        }
+    }
 
     private val errorMessage: ErrorMessage = new ErrorMessage(this, "Connection Error")
 

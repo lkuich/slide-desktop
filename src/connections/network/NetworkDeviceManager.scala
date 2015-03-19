@@ -3,16 +3,16 @@ package connections.network
 import java.io.IOException
 import java.net.SocketException
 
+import connections.{DeviceManager, ConnectionManager}
 import davinci.{Main, Device}
 import enums.ConnectionMode
 import gui.Frame
 import gui.img.ImageIcons
 
-class NetworkDeviceManager() {
+class NetworkDeviceManager() extends DeviceManager {
     private var ndc: NetworkDeviceConnection = null
 
     private var backgroundScannerRunning: Boolean = true
-    private var device: Device = null
 
     @throws(classOf[IOException])
     def connect(ip: String): Unit = {
@@ -43,25 +43,15 @@ class NetworkDeviceManager() {
                     device = udpDiscovery.search
                     if (device != null) {
                         dcCount = 0
-                        if (!Main.hasConnection(ConnectionMode.WIFI)) {
-                            Main.addConnection(ConnectionMode.WIFI)
-                            if (Main.multipleConnections) {
-                                adjustGui(ConnectionMode.USB)
-                            }
-                            else {
-                                adjustGui(ConnectionMode.WIFI)
-                            }
+                        if (!ConnectionManager.hasConnection(ConnectionMode.WIFI)) {
+                            onWifiConnectionAdded()
                         }
                     } else {
                         dcCount += 1
                         if (dcCount >= 4) {
-                            if (Main.hasConnection(ConnectionMode.WIFI)) {
-                                Main.removeConnection(ConnectionMode.WIFI)
-                                if (Main.hasConnection(ConnectionMode.USB)) {
-                                    adjustGui(ConnectionMode.USB)
-                                }
-                                else {
-                                    adjustGui(hidden = false)
+                            if (ConnectionManager.hasConnection(ConnectionMode.WIFI)) {
+                                if (device != null) {
+                                    onWifiConnectionRemoved()
                                 }
                             }
                         }

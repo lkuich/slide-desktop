@@ -8,7 +8,7 @@ import enums.ConnectionMode
 import gui.Frame
 import gui.img.ImageIcons
 
-abstract class UsbDeviceManager extends DeviceManager {
+class UsbDeviceManager extends DeviceManager {
 
     private var udc: UsbDeviceConnection = null
     private var backgroundScannerRunning: Boolean = true
@@ -28,25 +28,17 @@ abstract class UsbDeviceManager extends DeviceManager {
                     Thread.sleep(1000)
                     if (Adb.usbAvailable) {
                         dcCount = 0
-                        if (!Main.hasConnection(ConnectionMode.USB)) {
-                            ConnectionManager.addConnection(ConnectionMode.USB)
+                        if (!ConnectionManager.hasConnection(ConnectionMode.USB)) {
                             onUsbConnectionAdded()
-                            adjustGui(ConnectionMode.USB)
                         }
                     }
                     else {
                         dcCount += 1
                         if (dcCount >= 2) {
                             if (device != null) {
-                                if (Main.hasConnection(ConnectionMode.USB)) {
-                                    onUsbConnectionRemoved()
-                                    Main.removeConnection(ConnectionMode.USB) // Remove
-                                    if (Main.hasConnection(ConnectionMode.WIFI)) {
-                                        adjustGui(ConnectionMode.WIFI)
-                                        Frame.deviceField.showDeviceField(hidden)
-                                    }
-                                    else {
-                                        adjustGui(hidden = false)
+                                if (ConnectionManager.hasConnection(ConnectionMode.USB)) {
+                                    if (device != null) {
+                                        onUsbConnectionRemoved()
                                     }
                                 }
                             }
