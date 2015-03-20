@@ -25,6 +25,17 @@ object Frame extends JFrame with WindowListener {
         this.setBounds(100, 100, 0, 0)
         this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE)
 
+        val menuBar = new MenuBar{
+            override def showAdb(): Unit = {
+                new Console().runProcess(Adb.adbDevices())
+            }
+
+            override def restartAdb(): Unit = {
+                Adb.restartAdb()
+            }
+        }
+        this.setJMenuBar(menuBar)
+
         if (!SystemInfo.isNetworkIsAvailable)
             showErrorPrompt("Error", "No suitable network interface found.\nWiFi connection will be unavailable.")
     }

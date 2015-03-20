@@ -31,20 +31,13 @@ class Console extends JFrame {
 
     def showConsole(): Unit = this.setVisible(true)
 
-    def showAdbDevices(): Unit = {
+    def runProcess(pr: Process): Unit = {
         var deviceAvailable: Boolean = false
-        var command: String = Const.ADB + " devices"
-
-        if (Adb.isAdbFilePresent && !Adb.isAdbInstalled) {
-            command = Adb.adbFilePath + " devices"
-        }
 
         var consoleOut: String = null
         var stdInput: BufferedReader = null
         var stdError: BufferedReader = null
         if (Adb.isAdbFilePresent) {
-            val pr: Process = Runtime.getRuntime.exec(command)
-
             stdInput = new BufferedReader(new InputStreamReader(pr.getInputStream))
             stdError = new BufferedReader(new InputStreamReader(pr.getErrorStream))
 

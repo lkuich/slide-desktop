@@ -66,25 +66,41 @@ object Adb {
 
     def isAdbFilePresent: Boolean = new File(adbFilePath).exists()
 
-    /**
-     * Forwards ADB ports.
-     * @throws java.io.IOException If there is trouble accessing ADB.
-     */
     @throws(classOf[IOException])
-    def startAdb() {
+    private def executeAdbProcess(process: ProcessBuilder): Process = {
         if (isAdbInstalled) {
-            new ProcessBuilder(Const.ADB, "forward", "tcp:" + Const.USB_PORT, "tcp:" + Const.USB_PORT).start
-        }
-        else if (isAdbFilePresent) {
+            process.start()
+        } else if (isAdbFilePresent) {
             if (SystemInfo.chmod != "") {
                 new ProcessBuilder("chmod", SystemInfo.chmod, adbFilePath).start
             }
 
             try {
-                new ProcessBuilder(adbFilePath, "forward", "tcp:" + Const.USB_PORT, "tcp:" + Const.USB_PORT).start
+                process.start()
             } catch {
-                case e: Exception => println("ADB is unavailable")
+                case e: Exception =>
+                    println("ADB is unavailable")
+                    null
             }
+        } else {
+            null
         }
+    }
+
+    /**
+     * Forwards ADB ports.
+     * @throws java.io.IOException If there is trouble accessing ADB.
+     */
+    def startAdb(): Process = {
+        executeAdbProcess(new ProcessBuilder(Const.ADB, "forward", "tcp:" + Const.USB_PORT, "tcp:" + Const.USB_PORT))
+    }
+
+    def adbDevices(): Process = {
+        executeAdbProcess(new ProcessBuilder(Const.ADB, "devices"))
+    }
+
+    def restartAdb(): Process = {
+        executeAdbProcess(new ProcessBuilder(Const.ADB, "kill-server"))
+        executeAdbProcess(new ProcessBuilder(Const.ADB, "start-server"))
     }
 }
