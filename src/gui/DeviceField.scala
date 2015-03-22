@@ -37,7 +37,7 @@ class DeviceField(var onComponentsShown: () => Unit, var actionListener: ActionL
     this.add(connectButton, "cell 0 4, w 150!, grow")
 
     val alta: KeyBinder = new KeyBinder(KeyEvent.VK_ALT, KeyEvent.VK_A) {
-        override def onKeysDown(): Unit = new Console().runProcess(Adb.adbDevices())
+        override def onKeysDown(): Unit = new Console().runAdbProcess(Adb.adbDevices())
     }
     val altl: KeyBinder = new KeyBinder(KeyEvent.VK_ALT, KeyEvent.VK_L) {
         override def onKeysDown(): Unit = Licence.showLicense()

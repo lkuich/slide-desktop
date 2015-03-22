@@ -27,7 +27,7 @@ object Frame extends JFrame with WindowListener {
 
         val menuBar = new MenuBar{
             override def showAdb(): Unit = {
-                new Console().runProcess(Adb.adbDevices())
+                new Console().runAdbProcess(Adb.adbDevices())
             }
 
             override def restartAdb(): Unit = {
@@ -70,7 +70,6 @@ object Frame extends JFrame with WindowListener {
             }
         })
     this.getContentPane.add(deviceField, BorderLayout.CENTER)
-    /** Add deviceField to Frame */
 
     /** Controls USB connections. */
     private val usbMan: UsbDeviceManager = new UsbDeviceManager {

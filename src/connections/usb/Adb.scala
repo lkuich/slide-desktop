@@ -12,7 +12,7 @@ object Adb {
     var usbAvailable: Boolean = false
 
     var isAdbInstalled: Boolean = false
-    var adbFilePath: String = ""
+    var adbFilePath: String = "./"
     /** Make's sure init only gets called once */
     private var called: Boolean = false
 
@@ -30,8 +30,7 @@ object Adb {
                         fileManager.downloadFile(Const.MAINT_BASE + "adb/win/AdbWinApi.dll", "AdbWinApi.dll")
                         fileManager.downloadFile(Const.MAINT_BASE + "adb/win/AdbWinUsbApi.dll", "AdbWinUsbApi.dll")
                     }
-                case OperatingSystem.OSX => adbFilePath = "/Applications/Slide.app/Contents/Resources/" + Const.ADB
-                case _ => adbFilePath = "./" + Const.ADB
+                case _ => adbFilePath += Const.ADB
             }
             called = true
         } else {
@@ -92,15 +91,15 @@ object Adb {
      * @throws java.io.IOException If there is trouble accessing ADB.
      */
     def startAdb(): Process = {
-        executeAdbProcess(new ProcessBuilder(Const.ADB, "forward", "tcp:" + Const.USB_PORT, "tcp:" + Const.USB_PORT))
+        executeAdbProcess(new ProcessBuilder(adbFilePath, "forward", "tcp:" + Const.USB_PORT, "tcp:" + Const.USB_PORT))
     }
 
     def adbDevices(): Process = {
-        executeAdbProcess(new ProcessBuilder(Const.ADB, "devices"))
+        executeAdbProcess(new ProcessBuilder(adbFilePath, "devices"))
     }
 
     def restartAdb(): Process = {
-        executeAdbProcess(new ProcessBuilder(Const.ADB, "kill-server"))
-        executeAdbProcess(new ProcessBuilder(Const.ADB, "start-server"))
+        executeAdbProcess(new ProcessBuilder(adbFilePath, "kill-server"))
+        executeAdbProcess(new ProcessBuilder(adbFilePath, "start-server"))
     }
 }

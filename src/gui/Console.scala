@@ -32,17 +32,45 @@ class Console extends JFrame {
     def showConsole(): Unit = this.setVisible(true)
 
     def runProcess(pr: Process): Unit = {
+
+        var consoleOut: String = null
+        var stdInput: BufferedReader = null
+        var stdError: BufferedReader = null
+        if (pr != null) {
+            stdInput = new BufferedReader(new InputStreamReader(pr.getInputStream))
+            stdError = new BufferedReader(new InputStreamReader(pr.getErrorStream))
+            while ( {
+                consoleOut = stdInput.readLine()
+                consoleOut != null
+            }) {
+                this.append(consoleOut)
+            }
+
+            var errorOut: String = null
+            while ( {
+                errorOut = stdError.readLine()
+                errorOut != null
+            }) {
+                this.append(errorOut)
+            }
+        }
+
+        showConsole()
+    }
+
+    def runAdbProcess(pr: Process): Unit = {
         var deviceAvailable: Boolean = false
 
         var consoleOut: String = null
         var stdInput: BufferedReader = null
         var stdError: BufferedReader = null
-        if (Adb.isAdbFilePresent) {
+        if (Adb.isAdbFilePresent && pr != null) {
             stdInput = new BufferedReader(new InputStreamReader(pr.getInputStream))
             stdError = new BufferedReader(new InputStreamReader(pr.getErrorStream))
 
             while ( {
-                consoleOut = stdInput.readLine(); consoleOut != null
+                consoleOut = stdInput.readLine()
+                consoleOut != null
             }) {
                 if (consoleOut.contains("	device")) {
                     deviceAvailable = true
@@ -52,7 +80,8 @@ class Console extends JFrame {
 
             var errorOut: String = null
             while ( {
-                errorOut = stdError.readLine(); errorOut != null
+                errorOut = stdError.readLine()
+                errorOut != null
             }) {
                 this.append(errorOut)
             }
