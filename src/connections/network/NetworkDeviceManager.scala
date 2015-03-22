@@ -54,9 +54,7 @@ class NetworkDeviceManager extends BaseDeviceManager {
                         dcCount += 1
                         if (dcCount >= 4) {
                             if (ConnectionManager.hasConnection(ConnectionMode.WIFI)) {
-                                if (device != null) {
-                                    onWifiConnectionRemoved()
-                                }
+                                onWifiConnectionRemoved()
                             }
                         }
                     }

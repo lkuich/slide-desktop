@@ -40,9 +40,7 @@ class UsbDeviceManager extends BaseDeviceManager {
                         if (dcCount >= 2) {
                             if (device != null) {
                                 if (ConnectionManager.hasConnection(ConnectionMode.USB)) {
-                                    if (device != null) {
-                                        onUsbConnectionRemoved()
-                                    }
+                                    onUsbConnectionRemoved()
                                 }
                             }
                         }

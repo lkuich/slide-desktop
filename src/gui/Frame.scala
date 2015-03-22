@@ -122,6 +122,8 @@ object Frame extends JFrame with WindowListener {
 
         deviceField.show()
         deviceField.setUi(device)
+
+        pack()
     }
 
     /**
@@ -144,7 +146,13 @@ object Frame extends JFrame with WindowListener {
         }
 
         ConnectionManager.removeConnection(connectionMode)
-        deviceField.setUi(device)
+        if (device == null) {
+            deviceField.showDeviceField(visibility = false)
+        } else {
+            deviceField.setUi(device)
+        }
+
+        pack()
     }
 
     // Start managers
