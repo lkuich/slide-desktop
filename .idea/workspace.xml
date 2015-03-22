@@ -7,16 +7,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="13b87053-1a3f-4fc7-9889-c97a22f8e65d" name="Default" comment="">
-      <change type="DELETED" beforePath="C:\Users\Loren\Documents\Projects\slide-scala\.idea\libraries\scala_sdk_2_11_5.xml" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/slide-scala/connections/usb/Adb$$anon$1.class" afterPath="$PROJECT_DIR$/out/production/slide-scala/connections/usb/Adb$$anon$1.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/slide-scala/connections/usb/Adb$.class" afterPath="$PROJECT_DIR$/out/production/slide-scala/connections/usb/Adb$.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/slide-scala/gui/Console.class" afterPath="$PROJECT_DIR$/out/production/slide-scala/gui/Console.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/slide-scala/gui/DeviceField$$anon$1.class" afterPath="$PROJECT_DIR$/out/production/slide-scala/gui/DeviceField$$anon$1.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/gui/Frame.scala" afterPath="$PROJECT_DIR$/src/gui/Frame.scala" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/connections/network/NetworkDeviceManager.scala" afterPath="$PROJECT_DIR$/src/connections/network/NetworkDeviceManager.scala" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/connections/usb/UsbDeviceManager.scala" afterPath="$PROJECT_DIR$/src/connections/usb/UsbDeviceManager.scala" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/libraries/scala_sdk_2_11_6.xml" afterPath="$PROJECT_DIR$/.idea/libraries/scala_sdk_2_11_6.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/connections/usb/Adb.scala" afterPath="$PROJECT_DIR$/src/connections/usb/Adb.scala" />
     </list>
     <ignored path="slide-scala.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -46,11 +37,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="NetworkDeviceManager.scala" pinned="false" current-in-tab="true">
+      <file leaf-file-name="NetworkDeviceManager.scala" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/connections/network/NetworkDeviceManager.scala">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.33162394" vertical-offset="639" max-vertical-offset="1224">
-              <caret line="54" column="26" selection-start-line="54" selection-start-column="26" selection-end-line="54" selection-end-column="26" />
+            <state vertical-scroll-proportion="-28.137932" vertical-offset="0" max-vertical-offset="1224">
+              <caret line="53" column="21" selection-start-line="53" selection-start-column="21" selection-end-line="53" selection-end-column="21" />
               <folding />
             </state>
           </provider>
@@ -59,7 +50,7 @@
       <file leaf-file-name="UsbDeviceManager.scala" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/connections/usb/UsbDeviceManager.scala">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="357" max-vertical-offset="1037">
+            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1037">
               <caret line="39" column="43" selection-start-line="39" selection-start-column="43" selection-end-line="39" selection-end-column="43" />
               <folding />
             </state>
@@ -81,6 +72,16 @@
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0" vertical-offset="1275" max-vertical-offset="1921">
               <caret line="110" column="49" selection-start-line="110" selection-start-column="49" selection-end-line="110" selection-end-column="49" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Adb.scala" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/connections/usb/Adb.scala">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.6921824" vertical-offset="0" max-vertical-offset="1819">
+              <caret line="30" column="63" selection-start-line="30" selection-start-column="63" selection-end-line="30" selection-end-column="63" />
               <folding />
             </state>
           </provider>
@@ -190,11 +191,11 @@
         <option value="$PROJECT_DIR$/src/gui/Licence.scala" />
         <option value="$PROJECT_DIR$/src/gui/MenuBar.scala" />
         <option value="$PROJECT_DIR$/src/gui/Console.scala" />
-        <option value="$PROJECT_DIR$/src/connections/usb/Adb.scala" />
         <option value="$PROJECT_DIR$/src/connections/usb/UsbDeviceManager.scala" />
         <option value="$PROJECT_DIR$/src/gui/DeviceField.scala" />
         <option value="$PROJECT_DIR$/src/gui/Frame.scala" />
         <option value="$PROJECT_DIR$/src/connections/network/NetworkDeviceManager.scala" />
+        <option value="$PROJECT_DIR$/src/connections/usb/Adb.scala" />
       </list>
     </option>
   </component>
@@ -732,7 +733,7 @@
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.3220697" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3220697" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32928064" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.1765625" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
@@ -1088,6 +1089,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.29264477" vertical-offset="0" max-vertical-offset="639">
           <caret line="11" column="1" selection-start-line="11" selection-start-column="1" selection-end-line="11" selection-end-column="1" />
+          <folding />
         </state>
       </provider>
     </entry>
@@ -1142,14 +1144,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/connections/usb/Adb.scala">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-0.13843648" vertical-offset="170" max-vertical-offset="1802">
-          <caret line="10" column="0" selection-start-line="10" selection-start-column="0" selection-end-line="10" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/davinci/Main.scala">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="285">
@@ -1174,18 +1168,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/gui/DeviceField.scala">
+    <entry file="file://$PROJECT_DIR$/src/connections/network/NetworkDeviceManager.scala">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="1275" max-vertical-offset="1921">
-          <caret line="110" column="49" selection-start-line="110" selection-start-column="49" selection-end-line="110" selection-end-column="49" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/gui/Frame.scala">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="1904" max-vertical-offset="3111">
-          <caret line="153" column="0" selection-start-line="153" selection-start-column="0" selection-end-line="153" selection-end-column="0" />
+        <state vertical-scroll-proportion="-28.137932" vertical-offset="0" max-vertical-offset="1224">
+          <caret line="53" column="21" selection-start-line="53" selection-start-column="21" selection-end-line="53" selection-end-column="21" />
           <folding />
         </state>
       </provider>
@@ -1198,10 +1184,26 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/connections/network/NetworkDeviceManager.scala">
+    <entry file="file://$PROJECT_DIR$/src/gui/Frame.scala">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.33162394" vertical-offset="639" max-vertical-offset="1224">
-          <caret line="54" column="26" selection-start-line="54" selection-start-column="26" selection-end-line="54" selection-end-column="26" />
+        <state vertical-scroll-proportion="0.0" vertical-offset="1904" max-vertical-offset="3111">
+          <caret line="153" column="0" selection-start-line="153" selection-start-column="0" selection-end-line="153" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/gui/DeviceField.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="1275" max-vertical-offset="1921">
+          <caret line="110" column="49" selection-start-line="110" selection-start-column="49" selection-end-line="110" selection-end-column="49" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/connections/usb/Adb.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.6921824" vertical-offset="0" max-vertical-offset="1819">
+          <caret line="30" column="63" selection-start-line="30" selection-start-column="63" selection-end-line="30" selection-end-column="63" />
           <folding />
         </state>
       </provider>
