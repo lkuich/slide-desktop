@@ -30,7 +30,7 @@ object Adb {
                         fileManager.downloadFile(Const.MAINT_BASE + "adb/win/AdbWinApi.dll", "AdbWinApi.dll")
                         fileManager.downloadFile(Const.MAINT_BASE + "adb/win/AdbWinUsbApi.dll", "AdbWinUsbApi.dll")
                     }
-                case OperatingSystem.OSX => adbFilePath = "~/Documents/Slide.app/Contents/Resources/adb"
+                case OperatingSystem.OSX => adbFilePath = new File("adb").getCanonicalPath //"~/Documents/Slide.app/Contents/Resources/adb"
                 case _ => adbFilePath += Const.ADB
             }
             called = true
