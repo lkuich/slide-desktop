@@ -1,11 +1,13 @@
 package connections.usb
 
 import java.io.{File, IOException}
+import javax.swing.JOptionPane
 
 import com.android.ddmlib.AndroidDebugBridge.IDeviceChangeListener
 import com.android.ddmlib.{AndroidDebugBridge, IDevice}
 import davinci.{Const, FileManager, SystemInfo}
 import enums.OperatingSystem
+import gui.Frame
 
 object Adb {
 
@@ -30,7 +32,7 @@ object Adb {
                         fileManager.downloadFile(Const.MAINT_BASE + "adb/win/AdbWinApi.dll", "AdbWinApi.dll")
                         fileManager.downloadFile(Const.MAINT_BASE + "adb/win/AdbWinUsbApi.dll", "AdbWinUsbApi.dll")
                     }
-                case OperatingSystem.OSX => adbFilePath = new File("adb").getCanonicalPath //"~/Documents/Slide.app/Contents/Resources/adb"
+                case OperatingSystem.OSX => adbFilePath = new File("../Resources/adb").getCanonicalPath
                 case _ => adbFilePath += Const.ADB
             }
             called = true

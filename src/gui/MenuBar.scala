@@ -1,6 +1,6 @@
 package gui
 
-import javax.swing.{JMenu,KeyStroke,JMenuItem,JMenuBar,JOptionPane}
+import javax.swing._
 import java.awt.event.{InputEvent, ActionEvent, ActionListener, KeyEvent}
 
 /** Class for creating MenuBar **/
@@ -75,7 +75,7 @@ class MenuBar extends JMenuBar with ActionListener {
             showAdb()
         }
         else if (e.getActionCommand == helpMenuItems(1)) {
-            JOptionPane.showMessageDialog(this, "Slide\nBy: Loren Kuich\n<a href=\"http://www.slide-app.com/\">http://www.slide-app.com</a>", "About", JOptionPane.PLAIN_MESSAGE)
+            JOptionPane.showMessageDialog(this, "© Slide 2015 - Loren Kuich\nhttp://www.slide-app.com", "About", JOptionPane.PLAIN_MESSAGE)
         }
     }
 }
