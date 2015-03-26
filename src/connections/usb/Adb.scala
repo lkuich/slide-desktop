@@ -14,7 +14,7 @@ object Adb {
     var usbAvailable: Boolean = false
 
     var isAdbInstalled: Boolean = false
-    var adbFilePath: String = "./"
+    var adbFilePath: String = ""
     /** Make's sure init only gets called once */
     private var called: Boolean = false
 
@@ -27,26 +27,21 @@ object Adb {
             SystemInfo.operatingSystem match {
                 case OperatingSystem.WINDOWS =>
                     adbFilePath = Const.ADB + SystemInfo.systemExtension
-                    if (!isAdbFilePresent) {
+                    if (!isAdbAvailable) {
                         fileManager.downloadFile(Const.MAINT_BASE + "adb/win/adb.exe", "adb.exe")
                         fileManager.downloadFile(Const.MAINT_BASE + "adb/win/AdbWinApi.dll", "AdbWinApi.dll")
                         fileManager.downloadFile(Const.MAINT_BASE + "adb/win/AdbWinUsbApi.dll", "AdbWinUsbApi.dll")
                     }
-                case OperatingSystem.OSX => adbFilePath = new File("../Resources/adb").getCanonicalPath
+                case OperatingSystem.OSX => adbFilePath = "/usr/bin/adb"
                 case _ => adbFilePath += Const.ADB
             }
             called = true
         } else {
-            throw new Exception("init can not be called more than once.")
-        }
-
-        var command: String = Const.ADB
-        if (isAdbFilePresent && !isAdbInstalled) {
-            command = adbFilePath
+            throw new Exception("init() can not be called more than once.")
         }
 
         AndroidDebugBridge.init(false)
-        val debugBridge: AndroidDebugBridge = AndroidDebugBridge.createBridge(command, true)
+        val debugBridge: AndroidDebugBridge = AndroidDebugBridge.createBridge(adbFilePath, true)
         isAdbInstalled = debugBridge.getDevices.length > 0
 
         if (isAdbAvailable) {

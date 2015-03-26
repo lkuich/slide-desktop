@@ -1,7 +1,6 @@
 package davinci
 
 import java.awt.EventQueue
-
 import gui.Frame
 
 /** Main entry point */
