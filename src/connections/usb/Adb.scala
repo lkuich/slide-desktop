@@ -1,13 +1,11 @@
 package connections.usb
 
 import java.io.{File, IOException}
-import javax.swing.JOptionPane
 
 import com.android.ddmlib.AndroidDebugBridge.IDeviceChangeListener
 import com.android.ddmlib.{AndroidDebugBridge, IDevice}
 import davinci.{Const, FileManager, SystemInfo}
 import enums.OperatingSystem
-import gui.Frame
 
 object Adb {
 
@@ -32,8 +30,7 @@ object Adb {
                         fileManager.downloadFile(Const.MAINT_BASE + "adb/win/AdbWinApi.dll", "AdbWinApi.dll")
                         fileManager.downloadFile(Const.MAINT_BASE + "adb/win/AdbWinUsbApi.dll", "AdbWinUsbApi.dll")
                     }
-                case OperatingSystem.OSX => adbFilePath = "/usr/bin/adb"
-                case _ => adbFilePath += Const.ADB
+                case _ => adbFilePath = "/usr/bin/adb"
             }
             called = true
         } else {
@@ -42,7 +39,7 @@ object Adb {
 
         AndroidDebugBridge.init(false)
         val debugBridge: AndroidDebugBridge = AndroidDebugBridge.createBridge(adbFilePath, true)
-        isAdbInstalled = debugBridge.getDevices.length > 0
+        isAdbInstalled = debugBridge.getDevices.nonEmpty
 
         if (isAdbAvailable) {
             AndroidDebugBridge.addDeviceChangeListener(new IDeviceChangeListener {
