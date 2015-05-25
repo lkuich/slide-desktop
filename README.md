@@ -1,7 +1,7 @@
-# Slide-Desktop
+# Slide desktop
 Desktop application for Slide.
 
-#Importing with IntelliJ
+##Importing with IntelliJ
 The project is very straight forward to import.
 Go to File > Import > From Existing Source
 
