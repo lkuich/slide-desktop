@@ -5,7 +5,7 @@ import java.awt.event.{ActionListener, KeyEvent}
 import javax.swing._
 
 import connections.usb.Adb
-import davinci.Device
+import slide.Device
 import net.miginfocom.swing.MigLayout
 
 class DeviceField(var onComponentsShown: () => Unit, var actionListener: ActionListener) extends JPanel {

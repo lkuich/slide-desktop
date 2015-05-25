@@ -4,7 +4,7 @@ import java.io.IOException
 import java.net.SocketException
 
 import connections.{BaseDeviceManager, ConnectionManager}
-import davinci.SystemInfo
+import slide.SystemInfo
 import enums.ConnectionMode
 
 class NetworkDeviceManager extends BaseDeviceManager {

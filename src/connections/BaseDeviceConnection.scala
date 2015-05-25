@@ -4,7 +4,7 @@ import java.awt.event.{InputEvent, KeyEvent}
 import java.awt.{MouseInfo, Point, Robot}
 import java.net.Socket
 
-import davinci.{Const, Settings, UnknownCommandException}
+import slide.{Const, Settings, UnknownCommandException}
 import enums.{DeviceMessageType, PositioningMode}
 
 abstract class BaseDeviceConnection extends DeviceConnection {

@@ -3,7 +3,7 @@ package connections.usb
 import java.io.IOException
 
 import connections.{BaseDeviceManager, ConnectionManager}
-import davinci.Device
+import slide.Device
 import enums.ConnectionMode
 import gui.img.ImageIcons
 

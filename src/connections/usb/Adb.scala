@@ -4,7 +4,7 @@ import java.io.{File, IOException}
 
 import com.android.ddmlib.AndroidDebugBridge.IDeviceChangeListener
 import com.android.ddmlib.{AndroidDebugBridge, IDevice}
-import davinci.{Const, FileManager, SystemInfo}
+import slide.{Const, FileManager, SystemInfo}
 import enums.OperatingSystem
 
 object Adb {

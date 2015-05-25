@@ -1,4 +1,4 @@
-package davinci
+package slide
 
 object Const {
     val ADB: String = "adb"

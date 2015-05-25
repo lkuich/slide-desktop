@@ -4,7 +4,7 @@ import java.io.{IOException, ObjectInputStream}
 import java.net.InetSocketAddress
 
 import connections.BaseDeviceConnection
-import davinci.Const
+import slide.Const
 
 class NetworkDeviceConnection(val ip: String) extends BaseDeviceConnection {
 

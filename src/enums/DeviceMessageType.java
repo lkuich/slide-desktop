@@ -1,6 +1,6 @@
 package enums;
 
-import davinci.Const;
+import slide.Const;
 
 import java.util.HashMap;
 import java.util.Map;

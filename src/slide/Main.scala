@@ -1,4 +1,4 @@
-package davinci
+package slide
 
 import java.awt.EventQueue
 import gui.Frame

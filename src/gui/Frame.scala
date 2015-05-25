@@ -8,7 +8,7 @@ import javax.swing._
 import connections.ConnectionManager
 import connections.network.NetworkDeviceManager
 import connections.usb.{Adb, UsbDeviceManager}
-import davinci.{Device, FileManager, SystemInfo}
+import slide.{Device, FileManager, SystemInfo}
 import enums.ConnectionMode
 import gui.img.ImageIcons
 

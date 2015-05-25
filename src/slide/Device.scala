@@ -1,4 +1,4 @@
-package davinci
+package slide
 
 import javax.swing.ImageIcon
 

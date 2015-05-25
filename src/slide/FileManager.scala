@@ -1,4 +1,4 @@
-package davinci
+package slide
 
 import java.io.{File, FileOutputStream}
 import java.net.{URL, URLConnection}

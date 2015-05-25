@@ -1,6 +1,6 @@
 package connections
 
-import davinci.Device
+import slide.Device
 
 abstract class BaseDeviceManager extends DeviceManager {
     var device: Device = null

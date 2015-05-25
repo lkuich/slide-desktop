@@ -2,7 +2,7 @@ package connections.network
 
 import java.net.{DatagramPacket, DatagramSocket}
 
-import davinci.Device
+import slide.Device
 import gui.img.ImageIcons
 
 // TODO: Don't want to reference the GUI package
