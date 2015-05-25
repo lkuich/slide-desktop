@@ -1,5 +1,6 @@
 # Slide desktop
 Desktop application for Slide.
+The docs are currently quite lacking. Expect improved documentation soon.
 
 ##Importing with IntelliJ
 The project is very straight forward to import.
