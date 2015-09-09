@@ -28,11 +28,12 @@ abstract class BaseDeviceConnection extends DeviceConnection {
     def getIndex(array: Array[Int], value: Int): Int = {
         var index: Integer = 0
         try {
-            for (i <- 0 to array.length - 1) {
+            array.indices.foreach(index = _)
+            /*for (i <- array.indices) {
                 if (array(i) == value) {
                     index = i
                 }
-            }
+            }*/
         } catch {
             case e: ArrayIndexOutOfBoundsException => index = -1
         }
