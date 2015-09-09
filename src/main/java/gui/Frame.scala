@@ -10,7 +10,7 @@ import connections.network.NetworkDeviceManager
 import connections.usb.{Adb, UsbDeviceManager}
 import slide.{Device, FileManager, SystemInfo}
 import enums.ConnectionMode
-import gui.img.ImageIcons
+import gui.ImageIcons
 
 object Frame extends JFrame with WindowListener {
 

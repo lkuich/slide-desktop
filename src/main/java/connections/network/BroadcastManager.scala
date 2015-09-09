@@ -3,7 +3,7 @@ package connections.network
 import java.net.{DatagramPacket, DatagramSocket}
 
 import slide.Device
-import gui.img.ImageIcons
+import gui.ImageIcons
 
 // TODO: Don't want to reference the GUI package
 

@@ -6,7 +6,7 @@ import java.util.Scanner
 import javax.swing.{JFrame, JScrollPane, JTextArea, ScrollPaneConstants}
 
 object Licence extends JFrame {
-    val istream: InputStream = getClass.getResourceAsStream("licence-gpl.txt")
+    val istream: InputStream = getClass.getResourceAsStream("res/licence-gpl.txt")
     val licenseText: String = new Scanner(istream, "UTF-8").useDelimiter("\\A").next
 
     this.setTitle("Licence")
