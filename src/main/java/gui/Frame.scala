@@ -13,7 +13,6 @@ import enums.ConnectionMode
 import gui.ImageIcons
 
 object Frame extends JFrame with WindowListener {
-
     {
         /** Setup interface */
 
@@ -26,13 +25,8 @@ object Frame extends JFrame with WindowListener {
         this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE)
 
         val menuBar = new MenuBar{
-            override def showAdb(): Unit = {
-                new Console().runAdbProcess(Adb.adbDevices())
-            }
-
-            override def restartAdb(): Unit = {
-                Adb.restartAdb()
-            }
+            override def showAdb() = new Console().runAdbProcess(Adb.adbDevices())
+            override def restartAdb() = Adb.restartAdb()
         }
         this.setJMenuBar(menuBar)
 
@@ -42,6 +36,8 @@ object Frame extends JFrame with WindowListener {
 
     /** Can implement onDownloadStart, and onDownloadFinish */
     private val fm: FileManager = new FileManager {}
+
+    /** Initialize ADB */
     Adb.init(fm)
 
     /**
@@ -69,6 +65,8 @@ object Frame extends JFrame with WindowListener {
                 }
             }
         })
+
+    /** Adds device field to container */
     this.getContentPane.add(deviceField, BorderLayout.CENTER)
 
     /** Controls USB connections. */

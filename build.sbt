@@ -3,7 +3,7 @@ import sbt.Keys._
 lazy val `slide` = (project in file(".")).
 settings(
   name := "slide",
-  version := "1.0",
+  version := "2.54",
   scalaVersion := "2.11.4"
 )
 

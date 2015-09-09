@@ -25,7 +25,7 @@ object Adb {
             SystemInfo.operatingSystem match {
                 case OperatingSystem.WINDOWS =>
                     adbFilePath = Const.ADB + SystemInfo.systemExtension
-                    if (!isAdbAvailable) {
+                    if (!isAdbAvailable) { // ADB is unavailable
                         fileManager.downloadFile(Const.MAINT_BASE + "adb/win/adb.exe", "adb.exe")
                         fileManager.downloadFile(Const.MAINT_BASE + "adb/win/AdbWinApi.dll", "AdbWinApi.dll")
                         fileManager.downloadFile(Const.MAINT_BASE + "adb/win/AdbWinUsbApi.dll", "AdbWinUsbApi.dll")
@@ -38,8 +38,12 @@ object Adb {
         }
 
         AndroidDebugBridge.init(false)
-        val debugBridge: AndroidDebugBridge = AndroidDebugBridge.createBridge(adbFilePath, true)
-        isAdbInstalled = debugBridge.getDevices.nonEmpty
+        try {
+            val debugBridge: AndroidDebugBridge = AndroidDebugBridge.createBridge(adbFilePath, true)
+            isAdbInstalled = debugBridge.getDevices.nonEmpty
+        } catch {
+            case e: Exception =>
+        }
 
         if (isAdbAvailable) {
             AndroidDebugBridge.addDeviceChangeListener(new IDeviceChangeListener {

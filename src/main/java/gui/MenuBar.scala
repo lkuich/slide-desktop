@@ -1,7 +1,9 @@
 package gui
 
 import javax.swing._
-import java.awt.event.{InputEvent, ActionEvent, ActionListener, KeyEvent}
+import java.awt.event.{ActionEvent, ActionListener, KeyEvent}
+
+import connections.usb.Adb
 
 /** Class for creating MenuBar **/
 class MenuBar extends JMenuBar with ActionListener {
@@ -15,6 +17,8 @@ class MenuBar extends JMenuBar with ActionListener {
     private val helpMenuItems: Array[String] = Array[String]("Help", "About")
 
     {
+        /** "Constructor" */
+
         /** File menu */
         val fileMenu: JMenu = new JMenu(fileMenuItems(0))
         this.add(fileMenu)
@@ -27,6 +31,7 @@ class MenuBar extends JMenuBar with ActionListener {
         /** Adb menu */
         val adbMenu: JMenu = new JMenu(adbMenuItems(0))
         this.add(adbMenu)
+        adbMenu.setEnabled(Adb.usbAvailable)
         /** Adb Restart submenu */
         val restartAdbMenu: JMenuItem = new JMenuItem(adbMenuItems(1))
         restartAdbMenu.setMnemonic(KeyEvent.VK_R)
@@ -57,7 +62,6 @@ class MenuBar extends JMenuBar with ActionListener {
 
     /** Functions to be defined in implementing class */
     def showAdb(): Unit = {}
-
     def restartAdb(): Unit = {}
 
     /**
@@ -65,17 +69,13 @@ class MenuBar extends JMenuBar with ActionListener {
      * @param e Event
      */
     def actionPerformed(e: ActionEvent) {
-        if (e.getActionCommand == fileMenuItems(1)) { // Exit
+        if (e.getActionCommand == fileMenuItems(1)) // Exit
             System.exit(0)
-        }
-        else if (e.getActionCommand == adbMenuItems(1)) { // Restart ADB
+        else if (e.getActionCommand == adbMenuItems(1)) // Restart ADB
             restartAdb()
-        }
-        else if (e.getActionCommand == adbMenuItems(2)) { // Show ADB devices
+        else if (e.getActionCommand == adbMenuItems(2)) // Show ADB devices
             showAdb()
-        }
-        else if (e.getActionCommand == helpMenuItems(1)) {
+        else if (e.getActionCommand == helpMenuItems(1))
             JOptionPane.showMessageDialog(this, "© Slide 2015 - Loren Kuich\nhttp://www.slide-app.com", "About", JOptionPane.PLAIN_MESSAGE)
-        }
     }
 }
