@@ -1,6 +1,6 @@
 import sbt.Keys._
 
-lazy val `quanta_play_java` = (project in file(".")).
+lazy val `slide` = (project in file(".")).
 settings(
   name := "slide",
   version := "1.0",
