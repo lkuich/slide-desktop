@@ -21,15 +21,14 @@ abstract class KeyBinder(val keyCodes: Int*) extends KeyListener {
     private def getKeysDown: Boolean = {
         for (key <- this.keyCodes) {
             if (keyMap.containsKey(key)) {
-                if (!keyMap.get(key)) {
+                if (!keyMap.get(key))
                     return false
-                }
             }
-            else {
+            else
                 return false
-            }
         }
         keyMap.clear()
+
         true
     }
 

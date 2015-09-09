@@ -5,7 +5,7 @@ import java.io.IOException
 import connections.{BaseDeviceManager, ConnectionManager}
 import slide.Device
 import enums.ConnectionMode
-import gui.img.ImageIcons
+import gui.ImageIcons
 
 class UsbDeviceManager extends BaseDeviceManager {
 

@@ -2,8 +2,13 @@
 Desktop application for Slide.
 The docs are currently quite lacking. Expect improved documentation soon.
 
-##Importing with IntelliJ
-The project is very straight forward to import.
-Go to File > Import > From Existing Source
+##Installation
+Install Scala: http://www.scala-lang.org/<br>
+Install SBT: http://www.scala-sbt.org/
 
-IntelliJ Idea will take care of the rest.
+##Importing with IntelliJ
+1. Install the SBT Plugin. Settings > Plugins > Browse Repositories > SBT
+2. Restart IntelliJ
+3. Go to Import > From Existing Sources
+4. Import project from external model > SBT
+5. (Optional) use Auto-import

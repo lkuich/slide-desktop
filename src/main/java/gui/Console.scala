@@ -9,18 +9,21 @@ import slide.Const
 
 class Console extends JFrame {
     private val consoleTextField: JTextArea = new JTextArea()
-    this.setTitle("Output")
-    this.setBounds(100, 100, 400, 200)
 
-    consoleTextField.setEditable(false)
-    consoleTextField.setMargin(new Insets(10, 10, 10, 10))
-    consoleTextField.setAlignmentX(0)
-    this.getContentPane.add(consoleTextField, BorderLayout.CENTER)
-    consoleTextField.setCaretPosition(0)
+    {
+        this.setTitle("Output")
+        this.setBounds(100, 100, 400, 200)
 
-    val scroll: JScrollPane = new JScrollPane(consoleTextField,
-        ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER)
-    this.getContentPane.add(scroll)
+        consoleTextField.setEditable(false)
+        consoleTextField.setMargin(new Insets(10, 10, 10, 10))
+        consoleTextField.setAlignmentX(0)
+        this.getContentPane.add(consoleTextField, BorderLayout.CENTER)
+        consoleTextField.setCaretPosition(0)
+
+        val scroll: JScrollPane = new JScrollPane(consoleTextField,
+            ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER)
+        this.getContentPane.add(scroll)
+    }
 
     def append(text: String): Unit = {
         if (consoleTextField.getText == "")

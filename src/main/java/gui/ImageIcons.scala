@@ -1,4 +1,4 @@
-package gui.img
+package gui
 
 import java.net.URL
 import javax.swing.ImageIcon
@@ -11,10 +11,10 @@ object ImageIcons {
 
     private def getImagePath(mode: ConnectionMode): URL = {
         if (mode == ConnectionMode.USB) {
-            this.getClass.getResource("usb.png")
+            this.getClass.getResource("res/img/usb.png")
         }
         else if (mode == ConnectionMode.WIFI) {
-            this.getClass.getResource("wifi.png")
+            this.getClass.getResource("res/img/wifi.png")
         } else {
             new URL("")
         }
