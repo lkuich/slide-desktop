@@ -5,7 +5,6 @@ import java.io.{BufferedReader, InputStreamReader}
 import javax.swing._
 
 import connections.usb.Adb
-import slide.Const
 
 class Console extends JFrame {
     private val consoleTextField: JTextArea = new JTextArea()
