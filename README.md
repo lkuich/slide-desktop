@@ -1,6 +1,5 @@
 # Slide desktop
-Desktop application for Slide.
-The docs are currently quite lacking. Expect improved documentation soon.
+Desktop application for Slide. I'll make proper docs one day.
 
 ##Installation
 Install Scala: http://www.scala-lang.org/<br>
