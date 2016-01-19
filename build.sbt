@@ -3,8 +3,8 @@ import sbt.Keys._
 lazy val `slide` = (project in file(".")).
 settings(
   name := "slide",
-  version := "2.54",
-  scalaVersion := "2.11.4"
+  version := "2.56",
+  scalaVersion := "2.11.7"
 )
 
 compileOrder := CompileOrder.JavaThenScala
